@@ -4,7 +4,7 @@
 
 .home-page h1 {
   color: gray;
-  font-family: "Playfair Display", serif;
+  font-family: 'Playfair Display', serif;
 }
 
 .home-page {
@@ -80,7 +80,7 @@ filters
   font-size: 20px !important;
 }
 .banner {
-  background-image: url("https://images.hindustantimes.com/img/2021/10/10/1600x900/cb1a66c6-29e4-11ec-b7f8-760cd0963677_1633891499458.jpg");
+  background-image: url('https://www.cloudways.com/blog/wp-content/uploads/Ecommerce-Page-Builder.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -100,12 +100,12 @@ filters
   margin-top: 35vmax;
   z-index: 1;
 
-  font: 600 2.5vmax "Roboto";
+  font: 600 2.5vmax 'Roboto';
 }
 
 .banner > p {
   margin-left: 50vmax;
-  font: 300 1.4vmax "Lucida Sans";
+  font: 300 1.4vmax 'Lucida Sans';
 }
 
 .banner > a > button {
@@ -119,7 +119,7 @@ filters
   padding: 1vmax;
   transition: all 0.5s;
   width: 9vmax;
-  font: 500 1vmax "Roboto";
+  font: 500 1vmax 'Roboto';
 }
 .banner > a > button:hover {
   background-color: rgba(255, 255, 255, 0);
@@ -127,7 +127,7 @@ filters
 }
 
 .banner::after {
-  content: "";
+  content: '';
   width: 100vw;
   height: 100vmin;
   background-color: #ffffff;
@@ -182,11 +182,11 @@ filters
 
 .productCardSpan {
   margin: 0.5vmax;
-  font: 300 0.7vmax "Roboto";
+  font: 300 0.7vmax 'Roboto';
 }
 
 .productCard > p {
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-size: 1.2vmax;
   margin: 1vmax 0.5vmax;
   margin-bottom: 0;
@@ -195,7 +195,7 @@ filters
 .productCard > span {
   margin: 0.5vmax;
   color: tomato;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 1vmax;
 }
 
@@ -221,6 +221,6 @@ filters
 
   .productCard > div > span {
     margin: 0 0.5vmax;
-    font: 300 1vmax "Roboto";
+    font: 300 1vmax 'Roboto';
   }
 }

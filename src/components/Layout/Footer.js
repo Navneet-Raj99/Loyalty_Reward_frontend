@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./FooterBlack.css";
-import { AiFillLock } from "react-icons/ai";
-import { FaRupeeSign } from "react-icons/fa";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './FooterBlack.css';
+import { AiFillLock } from 'react-icons/ai';
+import { FaRupeeSign } from 'react-icons/fa';
 
 function Footer() {
   return (
@@ -19,14 +19,14 @@ function Footer() {
           className="black_each_footer_content"
         >
           <p>
-            {" "}
+            {' '}
             <img
               className="black_contact_image"
               src="https://img.icons8.com/ios-filled/50/ffffff/mail.png"
               alt="contact_image"
             />
             <span id="black_email_text">
-              {" "}
+              {' '}
               <a href="mailto:saenitkurukshetra@gmail.com">
                 saenitkurukshetra@gmail.com
               </a>
@@ -34,7 +34,7 @@ function Footer() {
           </p>
 
           <p>
-            {" "}
+            {' '}
             <img
               className="black_contact_image"
               src="https://img.icons8.com/ios-glyphs/30/ffffff/linkedin.png"
@@ -51,14 +51,14 @@ function Footer() {
           </p>
 
           <p>
-            {" "}
+            {' '}
             <img
               className="black_contact_image"
               src="https://img.icons8.com/material-outlined/24/ffffff/add-contact-to-company.png"
               alt="contact_image"
             />
             <span id="black_email_text">
-              {" "}
+              {' '}
               <Link to="/contact">Contact Us</Link>
             </span>
           </p>
@@ -76,14 +76,14 @@ function Footer() {
           className="black_each_footer_content"
         >
           <p>
-            {" "}
+            {' '}
             <img
               className="black_contact_image"
               src="https://img.icons8.com/ios-filled/50/ffffff/mail.png"
               alt="contact_image"
             />
             <span id="black_email_text">
-              {" "}
+              {' '}
               <Link to="/termsandconditions" target="_blank">
                 Terms And Conditions
               </Link>
@@ -91,7 +91,7 @@ function Footer() {
           </p>
 
           <div className="horizontal">
-            {" "}
+            {' '}
             <div className="black_contact_icon">
               <AiFillLock />
             </div>
@@ -103,7 +103,7 @@ function Footer() {
           </div>
 
           <div className="horizontal">
-            {" "}
+            {' '}
             <div className="black_contact_icon">
               <FaRupeeSign />
             </div>
