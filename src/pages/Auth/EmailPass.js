@@ -17,10 +17,10 @@ const EmailPass = () => {
     e.preventDefault();
     try {
       // Register the user using email and password
-      if (!email.endsWith("@nitkkr.ac.in")) {
-        toast.error("Please fill this by domain Id");
-        return;
-      }
+      // if (!email.endsWith("@nitkkr.ac.in")) {
+      //   toast.error("Please fill this by domain Id");
+      //   return;
+      // }
 
       const { user } = await firebase
         .auth()

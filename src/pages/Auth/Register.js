@@ -36,7 +36,7 @@ const Register = () => {
       // const result = await window.confirmationResult.confirm(otp);
 
       // If the confirmation succeeds, you can proceed with the registration process
-      if (Okk && isChecked) {
+      if (isChecked) {
         const res = await axios.post("/api/v1/auth/register", {
           name,
           email,
@@ -187,7 +187,7 @@ const Register = () => {
           </div>
           <div id="recaptcha-container"></div>{" "}
           {/* Add this div for reCAPTCHA */}
-          <button onClick={signin}> SEND OTP</button>{" "}
+          {/* <button onClick={signin}> SEND OTP</button>{" "}
           <div style={{ display: show ? "block" : "none" }}>
             <input
               type="text"
@@ -199,7 +199,7 @@ const Register = () => {
             <br />
             <br />
             <button onClick={ValidateOtp}>Verify</button>
-          </div>
+          </div> */}
           <div className="mb-3">
             <input
               type="text"
