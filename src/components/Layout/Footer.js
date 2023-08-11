@@ -27,9 +27,7 @@ function Footer() {
             />
             <span id="black_email_text">
               {' '}
-              <a href="mailto:saenitkurukshetra@gmail.com">
-                saenitkurukshetra@gmail.com
-              </a>
+              <a href="mailto:stylefusion@gmail.com">stylefusion@gmail.com</a>
             </span>
           </p>
 
