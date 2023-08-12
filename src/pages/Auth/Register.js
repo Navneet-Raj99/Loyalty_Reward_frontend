@@ -28,14 +28,9 @@ const Register = () => {
   const navigate = useNavigate();
 
   // form function
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      // const otp = prompt("Enter the OTP you received on your phone:");
-
-      // Confirm the verification code using the confirmation result
-      // const result = await window.confirmationResult.confirm(otp);
-
-      // If the confirmation succeeds, you can proceed with the registration process
       if (isChecked) {
         const res = await axios.post("/api/v1/auth/register", {
           name,
@@ -45,7 +40,7 @@ const Register = () => {
           address,
           answer,
         });
-
+        console.log(res);
         if (res && res.data.success) {
           toast.success(res.data && res.data.message);
           navigate("/login");
@@ -60,29 +55,6 @@ const Register = () => {
       toast.error("Something went wrong");
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await axios.post("/api/v1/auth/register", {
-  //       name,
-  //       email,
-  //       password,
-  //       phone,
-  //       address,
-  //       answer,
-  //     });
-  //     if (res && res.data.success) {
-  //       toast.success(res.data && res.data.message);
-  //       navigate("/login");
-  //     } else {
-  //       toast.error(res.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Something went wrong");
-  //   }
-  // };
   const signin = () => {
     if (phone === "" || phone.length < 10) return;
 

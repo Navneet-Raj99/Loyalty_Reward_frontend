@@ -6,17 +6,19 @@ import SearchInput from '../Form/SearchInput';
 import useCategory from '../../hooks/useCategory';
 import { useCart } from '../../context/cart';
 import { Badge } from 'antd';
+import {firebase} from '../../pages/Auth/Firebase';
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
-  const handleLogout = () => {
+  const handleLogout = async() => {
     setAuth({
       ...auth,
       user: null,
       token: '',
     });
+    await firebase.auth().signOut();
     localStorage.removeItem('auth');
     toast.success('Logout Successfully');
   };

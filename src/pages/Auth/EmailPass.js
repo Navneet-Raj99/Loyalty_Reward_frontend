@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -10,34 +10,51 @@ import Layout from "./../../components/Layout/Layout";
 
 const EmailPass = () => {
   const navigate = useNavigate();
-
+  useEffect(() => {
+    const interval = setInterval(checkEmailVerification, 3000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const buttonStyle = {
+    backgroundColor: buttonDisabled ? 'lightgray' : 'green',
+    cursor: buttonDisabled ? 'not-allowed' : 'pointer',
+    color: "white",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    border: "none",
+    margin: "10px"
+  } 
+  const checkEmailVerification = () => {
+    const user = auth.currentUser;
+    if(user){
+      user.reload().then(()=>{
+        if(user.emailVerified) {
+          setButtonDisabled(false);
+        }
+      })
+    }
+  } 
+  const handleContinue = async () => {
+      navigate('/register');
+  }
   const handleSubmitt = async (e) => {
     e.preventDefault();
     try {
-      // Register the user using email and password
-      // if (!email.endsWith("@nitkkr.ac.in")) {
-      //   toast.error("Please fill this by domain Id");
-      //   return;
-      // }
-
       const { user } = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-
-      // Send verification email to the registered user
       if (user) {
         await user.sendEmailVerification();
         toast.success("Verification email sent. Please check your inbox.");
-        // navigate(`/verify/${user.email}`);
       } else {
         toast.error(
           "Verification notttttt email sent. Please check your inbox."
         );
       }
-
-      // Proceed with the user registration and data sending to the server
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong", error);
@@ -101,6 +118,13 @@ const EmailPass = () => {
             Verify Email
           </button>
         </form>
+        <button
+             style={buttonStyle}
+            disabled = {buttonDisabled}
+            onClick={handleContinue}
+          >
+            Continue
+          </button>
       </div>
     </Layout>
   );
