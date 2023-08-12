@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import Layout from "./../../components/Layout/Layout";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
-import toast from "react-hot-toast";
-// import firebase from "firebase/app";
-// import "firebase/auth";
+import React, { useState } from 'react';
+import Layout from './../../components/Layout/Layout';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { firebase, auth } from './Firebase';
+import '../../styles/AuthStyles.css';
 
-import { firebase, auth } from "./Firebase";
-import "../../styles/AuthStyles.css";
 const Register = () => {
   const [isChecked, setIsChecked] = useState(true);
 
@@ -16,26 +14,35 @@ const Register = () => {
   };
   const [show, setshow] = useState(false);
   // Rest of your code...
-  const [final, setfinal] = useState("");
-  const [otp, setOtp] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [final, setfinal] = useState('');
+  const [otp, setOtp] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [answer, setAnswer] = useState('');
   const [Okk, setOkk] = useState(false);
   const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+
   const [isSeller, setIsSeller] = useState(false);
   // form function
+  const handleImageChange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+    }
+  };
+
   const handleSellerCheckboxChange = () => {
     setIsSeller(!isSeller);
-  }
-  const handleSubmit = async (e) => {
+  };
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
       if (isChecked) {
-        const res = await axios.post("/api/v1/auth/register", {
+        const res = await axios.post('/api/v1/auth/register', {
           name,
           email,
           password,
@@ -47,30 +54,30 @@ const Register = () => {
         console.log(res);
         if (res && res.data.success) {
           toast.success(res.data && res.data.message);
-          navigate("/login");
+          navigate('/login');
         } else {
           toast.error(res.data.message);
         }
       } else {
-        toast.error("please Enter OTP");
+        toast.error('please Enter OTP');
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
+      toast.error('Something went wrong');
     }
   };
   const signin = () => {
-    if (phone === "" || phone.length < 10) return;
+    if (phone === '' || phone.length < 10) return;
 
-    let verify = new firebase.auth.RecaptchaVerifier("recaptcha-container");
+    let verify = new firebase.auth.RecaptchaVerifier('recaptcha-container');
     auth
       .signInWithPhoneNumber(phone, verify)
-      .then((result) => {
+      .then(result => {
         setfinal(result);
-        alert("code sent");
+        alert('code sent');
         setshow(true);
       })
-      .catch((err) => {
+      .catch(err => {
         alert(err);
         window.location.reload();
       });
@@ -79,17 +86,17 @@ const Register = () => {
     if (otp === null || final === null) return;
     final
       .confirm(otp)
-      .then((result) => {
+      .then(result => {
         // success
-        console.log("====================================");
-        console.log("succ");
-        console.log("====================================");
-        toast.success("OTP Verified👍👍");
+        console.log('====================================');
+        console.log('succ');
+        console.log('====================================');
+        toast.success('OTP Verified👍👍');
         setOkk(true);
       })
-      .catch((err) => {
-        alert("Wrong code");
-        navigate("/");
+      .catch(err => {
+        alert('Wrong code');
+        navigate('/');
       });
   };
 
@@ -113,14 +120,14 @@ const Register = () => {
 
   return (
     <Layout title="Register - Ecommer App">
-      <div className="form-container" style={{ minHeight: "90vh" }}>
+      <div className="form-container" style={{ minHeight: '90vh' }}>
         <form onSubmit={handleSubmit}>
           <h4 className="title">REGISTER FORM</h4>
           <div className="mb-3">
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={e => setName(e.target.value)}
               className="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Your Name"
@@ -132,7 +139,7 @@ const Register = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               className="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Your Email "
@@ -143,7 +150,7 @@ const Register = () => {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Enter Your Password"
@@ -154,14 +161,24 @@ const Register = () => {
             <input
               // type="text"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={e => setPhone(e.target.value)}
               className="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Your Phone"
               required
             />
           </div>
-          <div id="recaptcha-container"></div>{" "}
+          <div className="mb-3">
+            <p>Upload Image</p>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              className="form-control"
+              id="imageUpload"
+              accept="image/*"
+            />
+          </div>
+          <div id="recaptcha-container"></div>{' '}
           {/* Add this div for reCAPTCHA */}
           {/* <button onClick={signin}> SEND OTP</button>{" "}
           <div style={{ display: show ? "block" : "none" }}>
@@ -180,7 +197,7 @@ const Register = () => {
             <input
               type="text"
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={e => setAddress(e.target.value)}
               className="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Your Address"
@@ -191,7 +208,7 @@ const Register = () => {
             <input
               type="text"
               value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
+              onChange={e => setAnswer(e.target.value)}
               className="form-control"
               id="exampleInputEmail1"
               placeholder="What is Your Favorite sports"
@@ -205,7 +222,7 @@ const Register = () => {
               onChange={handleCheckboxChange}
               required
             />
-            I agree to the{" "}
+            I agree to the{' '}
             {/* <button onClick={navigate("/termsandconditions")}>
               Terms and Conditions
             </button> */}
@@ -219,7 +236,7 @@ const Register = () => {
             />
             Are you a seller ?
           </label>
-          <br/>
+          <br />
           <button type="submit" className="btn btn-primary">
             REGISTER
           </button>
