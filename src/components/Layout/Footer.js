@@ -1,152 +1,126 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './FooterBlack.css';
-import { AiFillLock } from 'react-icons/ai';
-import { FaRupeeSign } from 'react-icons/fa';
+import {
+  MDBFooter,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBIcon,
+} from 'mdb-react-ui-kit';
 
 function Footer() {
   return (
-    <div id="black_footer">
-      <div id="black_footer_box1">
-        <div id="black_heading_of_footers1">
-          <h1 id="black_contact_us" className="black_footer_components">
-            Contact Us
-          </h1>
-        </div>
-        <hr id="black_line_for_third" />
-        <div
-          id="black_contact_us_content"
-          className="black_each_footer_content"
-        >
-          <p>
-            {' '}
-            <img
-              className="black_contact_image"
-              src="https://img.icons8.com/ios-filled/50/ffffff/mail.png"
-              alt="contact_image"
-            />
-            <span id="black_email_text">
-              {' '}
-              <a href="mailto:stylefusion@gmail.com">stylefusion@gmail.com</a>
-            </span>
-          </p>
+    <MDBFooter bgColor="dark" className="text-center text-lg-start text-white">
+      <section className="">
+        <MDBContainer className="text-center text-md-start mt-5">
+          <MDBRow className="mt-3">
+            <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-5">
+              <h6 className="text-uppercase fw-bold mb-4">
+                <MDBIcon icon="gem" className="me-3" />
+                Style Fusion
+              </h6>
+              <p>
+                Indulge in a world-class shopping experience at your fingertips.
+                Explore exclusive collections, enjoy hassle-free returns, and
+                find unbeatable deals, all delivered with unparalleled
+                convenience
+              </p>
+            </MDBCol>
+            <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-5">
+              <h6 className="text-uppercase fw-bold mb-4">Social networks</h6>
+              <p>
+                <a href="" className="me-4 text-reset">
+                  <MDBIcon fab icon="facebook-f" />
+                </a>
+                <span className="text-white">Facebook</span>
+              </p>
+              <p>
+                <a href="" className="me-4 text-reset">
+                  <MDBIcon fab icon="twitter" />
+                </a>
+                <span className="text-white">Twitter</span>
+              </p>
+              <p>
+                <a href="" className="me-4 text-reset">
+                  <MDBIcon fab icon="google" />
+                </a>
+                <span className="text-white">Google</span>
+              </p>
+              <p>
+                <a href="" className="me-4 text-reset">
+                  <MDBIcon fab icon="instagram" />
+                </a>
+                <span className="text-white">Instagram</span>
+              </p>
+            </MDBCol>
+            <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-5">
+              <h6 className="text-uppercase fw-bold mb-4">Products</h6>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Electronics
+                </a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Home & Kitchen
+                </a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Clothing & Brands
+                </a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Books, Sports
+                </a>
+              </p>
+            </MDBCol>
 
-          <p>
-            {' '}
-            <img
-              className="black_contact_image"
-              src="https://img.icons8.com/ios-glyphs/30/ffffff/linkedin.png"
-              alt="contact_image"
-            />
-            <span id="black_linkedin_text">
-              <a
-                href="https://in.linkedin.com/company/sae-nit-kkr"
-                target="_blank"
-              >
-                linkedin
-              </a>
-            </span>
-          </p>
+            <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-5">
+              <h6 className="text-uppercase fw-bold mb-4">Useful links</h6>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Pricing
+                </a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Settings
+                </a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Orders
+                </a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset text-white">
+                  Help
+                </a>
+              </p>
+            </MDBCol>
 
-          <p>
-            {' '}
-            <img
-              className="black_contact_image"
-              src="https://img.icons8.com/material-outlined/24/ffffff/add-contact-to-company.png"
-              alt="contact_image"
-            />
-            <span id="black_email_text">
-              {' '}
-              <Link to="/contact">Contact Us</Link>
-            </span>
-          </p>
-        </div>
-      </div>
-      <div id="black_footer_box4">
-        <div id="black_heading_of_footers3">
-          <h1 id="black_contact_us" className="black_footer_components">
-            Guidelines
-          </h1>
-        </div>
-        <hr id="black_line_for_third" />
-        <div
-          id="black_contact_us_content"
-          className="black_each_footer_content"
-        >
-          <p>
-            {' '}
-            <img
-              className="black_contact_image"
-              src="https://img.icons8.com/ios-filled/50/ffffff/mail.png"
-              alt="contact_image"
-            />
-            <span id="black_email_text">
-              {' '}
-              <Link to="/termsandconditions" target="_blank">
-                Terms And Conditions
-              </Link>
-            </span>
-          </p>
-
-          <div className="horizontal">
-            {' '}
-            <div className="black_contact_icon">
-              <AiFillLock />
-            </div>
-            <span id="black_linkedin_text">
-              <Link to="/privacypolicy" target="_blank">
-                Privacy Policy
-              </Link>
-            </span>
-          </div>
-
-          <div className="horizontal">
-            {' '}
-            <div className="black_contact_icon">
-              <FaRupeeSign />
-            </div>
-            <span id="black_linkedin_text">
-              <Link to="/refundandcancelpolicy" target="_blank">
-                Refund and Cancel Policy
-              </Link>
-            </span>
-          </div>
-        </div>
-
-        {/* <div id="black_heading_of_footers4">
-          <h1 id="black_newsletter" className="black_footer_components">
-            {" "}
-            Join Our Newsletter
-          </h1>
-        </div>
-        <hr id="black_line_for_fourth" />
-        
-        <div
-          id="black_newsletter_content"
-          className="black_each_footer_content"
-         >
-         
-          <img id="coming_soon"src={Coming}/>
-          <input
-            id="black_getting_mail"
-            type="text"
-            placeholder="Enter your email..."
-          />
-          <button id="black_joinus"> Join</button>
-          <br />
-          <br />
-          <input
-            type="checkbox"
-            id="black_select"
-            name="select"
-            value="got_it"
-          />
-          <span id="black_checkbox_disclaimer">
-            Yes,I'd like to hear about updates on my mail
-          </span>
-        </div> */}
-      </div>
-    </div>
+            <MDBCol md="4" lg="3" xl="3" className="mx-auto mb-md-0 mb-5">
+              <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
+              <p>
+                <MDBIcon icon="home" className="me-2" />
+                Delhi, India
+              </p>
+              <p>
+                <MDBIcon icon="envelope" className="me-3" />
+                stylefusion@gmail.com
+              </p>
+              <p>
+                <MDBIcon icon="phone" className="me-3" /> + 91 123 731 22 33
+              </p>
+              <p>
+                <MDBIcon icon="print" className="me-3" /> + 91 123 726 22 33
+              </p>
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
+      </section>
+    </MDBFooter>
   );
 }
 
