@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { firebase, auth } from "./Firebase";
 import "../../styles/AuthStyles.css";
 const Register = () => {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -26,8 +26,11 @@ const Register = () => {
   const [answer, setAnswer] = useState("");
   const [Okk, setOkk] = useState(false);
   const navigate = useNavigate();
-
+  const [isSeller, setIsSeller] = useState(false);
   // form function
+  const handleSellerCheckboxChange = () => {
+    setIsSeller(!isSeller);
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,6 +42,7 @@ const Register = () => {
           phone,
           address,
           answer,
+          isSeller,
         });
         console.log(res);
         if (res && res.data.success) {
@@ -194,7 +198,7 @@ const Register = () => {
               required
             />
           </div>
-          <label>
+          {/* <label>
             <input
               type="checkbox"
               checked={isChecked}
@@ -205,8 +209,17 @@ const Register = () => {
             {/* <button onClick={navigate("/termsandconditions")}>
               Terms and Conditions
             </button> */}
-          </label>
+          {/* </label> */}
           <br />
+          <label>
+            <input
+              type="checkbox"
+              checked={isSeller}
+              onChange={handleSellerCheckboxChange}
+            />
+            Are you a seller ?
+          </label>
+          <br/>
           <button type="submit" className="btn btn-primary">
             REGISTER
           </button>

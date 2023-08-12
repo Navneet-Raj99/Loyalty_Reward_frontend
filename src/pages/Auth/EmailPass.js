@@ -123,7 +123,7 @@ const EmailPass = () => {
             disabled = {buttonDisabled}
             onClick={handleContinue}
           >
-            Continue
+            Verify Email to Continue Registration
           </button>
       </div>
     </Layout>
