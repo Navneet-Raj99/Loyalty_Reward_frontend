@@ -79,6 +79,13 @@ const Header = () => {
                 </ul>
               </li>
 
+              {/* Add Wallet Icon Link Here */}
+              <li className="nav-item">
+                <NavLink to="/wallet" className="nav-link">
+                  <i class="fa-solid fa-wallet fa-beat"></i>
+                </NavLink>
+              </li>
+
               {!auth?.user ? (
                 <>
                   <li className="nav-item">
