@@ -5,8 +5,16 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-const { Option } = Select;
+import { PutObjectCommand, S3Client  } from "@aws-sdk/client-s3";
 
+const { Option } = Select;
+const client = new S3Client({
+  credentials: {
+    accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID, // store it in .env file to keep it safe
+    secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+  },
+  region: process.env.REACT_APP_REGION,
+});
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
@@ -19,9 +27,10 @@ const UpdateProduct = () => {
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
-
+  const [image, setImage] = useState();
+  const [productImg, setProductImg] = useState();
   //get single product
-  const getSingleProduct = async () => {
+  const getSingleProduct = async () => {  
     try {
       const { data } = await axios.get(
         `/api/v1/product/get-product/${params.slug}`
@@ -34,10 +43,20 @@ const UpdateProduct = () => {
       setQuantity(data.product.quantity);
       setShipping(data.product.shipping);
       setCategory(data.product.category._id);
+      setProductImg(data.product.imgUrl);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handlePhotoUpdate = (e) => {
+    try {
+      setPhoto(e.target.files[0])
+      setImage(e.target.files[0]);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   useEffect(() => {
     getSingleProduct();
     //eslint-disable-next-line
@@ -58,18 +77,36 @@ const UpdateProduct = () => {
   useEffect(() => {
     getAllCategory();
   }, []);
-
+  const main = async () => {
+    try {
+      const command = new PutObjectCommand({
+        Bucket: "flipkarbucket",
+        Key: `products/${image.name}`,
+        Body: image,
+      });
+      const response = await client.send(command);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  const getObjectUrl = () => {
+    return `https://flipkarbucket.s3.ap-south-1.amazonaws.com/products/${image.name}`;
+  }
   //create product function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
+      await main();
       const productData = new FormData();
+      const imgUrl = getObjectUrl();
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
       photo && productData.append("photo", photo);
       productData.append("category", category);
+      productData.append("imgUrl", imgUrl);
       const { data } = axios.put(
         `/api/v1/product/update-product/${id}`,
         productData
@@ -135,7 +172,7 @@ const UpdateProduct = () => {
                     type="file"
                     name="photo"
                     accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
+                    onChange={handlePhotoUpdate}
                     hidden
                   />
                 </label>
@@ -153,7 +190,7 @@ const UpdateProduct = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/product/product-photo/${id}`}
+                      src={productImg}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"

@@ -16,6 +16,10 @@ const Dashboard = () => {
               <h3>{auth?.user?.name}</h3>
               <h3>{auth?.user?.email}</h3>
               <h3>{auth?.user?.address}</h3>
+              <img
+                src = {`${auth.user.imgUrl}`}
+                alt = "Profile-Pic"  
+              />
             </div>
           </div>
         </div>

@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
+import { PutObjectCommand, S3Client  } from "@aws-sdk/client-s3";
+
 const { Option } = Select;
 
 const CreateProduct = () => {
@@ -17,7 +19,14 @@ const CreateProduct = () => {
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
-
+  const [image, setImage] = useState("");
+  const client = new S3Client({
+    credentials: {
+      accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID, // store it in .env file to keep it safe
+      secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+    },
+    region: process.env.REACT_APP_REGION,
+  });
   //get all category
   const getAllCategory = async () => {
     try {
@@ -34,18 +43,36 @@ const CreateProduct = () => {
   useEffect(() => {
     getAllCategory();
   }, []);
-
+  const main = async () => {
+    try {
+      const command = new PutObjectCommand({
+        Bucket: "flipkarbucket",
+        Key: `products/${image.name}`,
+        Body: image,
+      });
+      const response = await client.send(command);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const getObjectUrl = () => {
+    return `https://flipkarbucket.s3.ap-south-1.amazonaws.com/products/${image.name}`;
+  }
   //create product function
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
       const productData = new FormData();
+      await main();
+      const imgUrl = getObjectUrl();
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
       productData.append("photo", photo);
       productData.append("category", category);
+      productData.append("imgUrl", imgUrl);
       const { data } = axios.post(
         "/api/v1/product/create-product",
         productData
@@ -61,7 +88,14 @@ const CreateProduct = () => {
       toast.error("something went wrong");
     }
   };
-
+  const handlePhotoUpload = (e) => {
+    try {
+      setPhoto(e.target.files[0])
+      setImage(e.target.files[0]);
+    } catch (err) {
+      console.lof(err);
+    }
+  };
   return (
     <Layout title={"Dashboard - Create Product"}>
       <div className="container-fluid m-3 p-3 dashboard">
@@ -95,7 +129,7 @@ const CreateProduct = () => {
                     type="file"
                     name="photo"
                     accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
+                    onChange={handlePhotoUpload}
                     hidden
                   />
                 </label>

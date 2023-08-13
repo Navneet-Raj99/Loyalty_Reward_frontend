@@ -13,8 +13,12 @@ const AdminDashboard = () => {
           </div>
           <div className="col-md-9">
             <div className="card w-75 p-3">
-              <h3> YOUR Name : {auth?.user?.name}</h3>
+              <h3> Your Name : {auth?.user?.name}</h3>
               <h3> Email : {auth?.user?.email}</h3>
+              <img
+                src = {`${auth.user.imgUrl}`}
+                alt = "Profile-Pic"  
+              />
             </div>
           </div>
         </div>

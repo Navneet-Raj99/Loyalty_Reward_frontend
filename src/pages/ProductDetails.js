@@ -42,7 +42,7 @@ const ProductDetails = () => {
       <div className="row container product-details">
         <div className="col-md-6">
           <img
-            src={`/api/v1/product/product-photo/${product._id}`}
+            src={product.imgUrl}
             className="card-img-top"
             alt={product.name}
             height="300"

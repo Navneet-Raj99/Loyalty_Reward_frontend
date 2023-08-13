@@ -11,7 +11,9 @@ const Products = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get("/api/v1/product/get-product");
+      console.log(data.products);
       setProducts(data.products);
+      console.log(products);
     } catch (error) {
       console.log(error);
       toast.error("Someething Went Wrong");
@@ -39,7 +41,7 @@ const Products = () => {
               >
                 <div className="card m-2" style={{ width: "18rem" }}>
                   <img
-                    src={`/api/v1/product/product-photo/${p._id}`}
+                    src={p.imgUrl}
                     className="card-img-top"
                     alt={p.name}
                   />

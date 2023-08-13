@@ -5,7 +5,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { firebase, auth } from './Firebase';
 import '../../styles/AuthStyles.css';
-
+import { PutObjectCommand, S3Client  } from "@aws-sdk/client-s3";
+// import dotenv from 'dotenv'
 const Register = () => {
   const [isChecked, setIsChecked] = useState(true);
 
@@ -25,7 +26,13 @@ const Register = () => {
   const [Okk, setOkk] = useState(false);
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
-
+  const client = new S3Client({
+    credentials: {
+      accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID, // store it in .env file to keep it safe
+      secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+    },
+    region: process.env.REACT_APP_REGION,
+  });
   const [isSeller, setIsSeller] = useState(false);
   // form function
   const handleImageChange = e => {
@@ -34,14 +41,32 @@ const Register = () => {
       setImage(file);
     }
   };
-
+  const main = async () => {
+    try {
+      const command = new PutObjectCommand({
+        Bucket: "flipkarbucket",
+        Key: `users/${image.name}`,
+        Body: image,
+      });
+      const response = await client.send(command);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const handleSellerCheckboxChange = () => {
     setIsSeller(!isSeller);
   };
+  const getObjectUrl = () => {
+    return `https://flipkarbucket.s3.ap-south-1.amazonaws.com/users/${image.name}`;
+  }
   const handleSubmit = async e => {
     e.preventDefault();
     try {
       if (isChecked) {
+        await main();
+        const imgUrl = await getObjectUrl();
+        console.log(imgUrl);
         const res = await axios.post('/api/v1/auth/register', {
           name,
           email,
@@ -50,6 +75,7 @@ const Register = () => {
           address,
           answer,
           isSeller,
+          imgUrl,
         });
         console.log(res);
         if (res && res.data.success) {
@@ -169,8 +195,8 @@ const Register = () => {
             />
           </div>
           <div className="mb-3">
-            <p>Upload Image</p>
             <input
+              placeholder="Upload your Image"
               type="file"
               onChange={handleImageChange}
               className="form-control"
