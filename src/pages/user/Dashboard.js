@@ -1,25 +1,43 @@
-import React from "react";
-import Layout from "../../components/Layout/Layout";
-import UserMenu from "../../components/Layout/UserMenu";
-import { useAuth } from "../../context/auth";
+import React from 'react';
+import Layout from '../../components/Layout/Layout';
+import UserMenu from '../../components/Layout/UserMenu';
+import { useAuth } from '../../context/auth';
+import '../../styles/Dashboard.css';
+
 const Dashboard = () => {
   const [auth] = useAuth();
   return (
-    <Layout title={"Dashboard - Ecommerce App"}>
-      <div className="container-flui m-3 p-3 dashboard">
+    <Layout title={'Dashboard - Ecommerce App'}>
+      <div className="container-fluid m-3 p-3 dashboard">
         <div className="row">
           <div className="col-md-3">
             <UserMenu />
           </div>
           <div className="col-md-9">
             <div className="card w-75 p-3">
-              <h3>{auth?.user?.name}</h3>
-              <h3>{auth?.user?.email}</h3>
-              <h3>{auth?.user?.address}</h3>
-              <img
-                src = {`${auth.user.imgUrl}`}
-                alt = "Profile-Pic"  
-              />
+              <div className="profile-picture">
+                <img
+                  src={`${auth?.user?.imgUrl}`}
+                  alt="Profile-Pic"
+                  style={{ width: '150px', height: '150px' }}
+                />
+              </div>
+              <div className="user-info">
+                <span className="user-info-label">Name:</span>{' '}
+                {auth?.user?.name}
+              </div>
+              <div className="user-info">
+                <span className="user-info-label">Email:</span>{' '}
+                {auth?.user?.email}
+              </div>
+              <div className="user-info">
+                <span className="user-info-label">Address:</span>{' '}
+                {auth?.user?.address}
+              </div>
+              <div className="user-info">
+                <span className="user-info-label">Phone No:</span>{' '}
+                {auth?.user?.phone}
+              </div>
             </div>
           </div>
         </div>

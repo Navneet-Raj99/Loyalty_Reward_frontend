@@ -31,6 +31,7 @@ import PaymentSuccess from './components/Payment/PaymentSuccess';
 import TermsAndConditions from './components/FooterReq/TermsAndConditions';
 import PrivacyPolicy from './components/FooterReq/PrivacyPolicy';
 import RefundPolicy from './components/FooterReq/RefundPolicy';
+import Coupons from './pages/Coupons';
 function App() {
   return (
     <>
@@ -39,6 +40,7 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/coupons" element={<Coupons />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/category/:slug" element={<CategoryProduct />} />
         <Route path="/verify" element={<EmailVerification />} />

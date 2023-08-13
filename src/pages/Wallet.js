@@ -1,48 +1,71 @@
-import React from 'react';
 import Layout from '../components/Layout/Layout';
-import { useAuth } from '../context/auth';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Wallet.css';
 
-const Dashboard = () => {
-  const [auth] = useAuth();
+const Wallet = () => {
+  const [profile, setProfile] = useState({
+    name: '',
+    email: '',
+    photo: '',
+    wallets: [],
+    totalLoyaltyPoints: 0,
+  });
+  useEffect(() => {
+    const mockProfile = {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      photo:
+        'https://thumbs.dreamstime.com/z/vector-illustration-avatar-dummy-logo-collection-image-icon-stock-isolated-object-set-symbol-web-137160339.jpg',
+      wallets: [
+        {
+          account: 'Account 1',
+          coupons: ['Coupon 1', 'Coupon 2', 'Coupon 3', 'Coupon 4'],
+        },
+        { account: 'Account 2', coupons: ['Coupon 5', 'Coupon 6'] },
+      ],
+      totalLoyaltyPoints: 150,
+    };
+
+    setProfile(mockProfile);
+  }, []);
+
   return (
     <Layout title={'Dashboard - Ecommerce App'}>
-      <div className="container-fluid m-3 p-3 dashboard">
-        <div className="row">
-          <div className="col-md-9"></div> {/* Left empty space */}
-          <div className="col-md-3" style={{ marginLeft: '30px' }}>
-            {' '}
-            {/* Added margin-right */}
-            <div className="row">
-              <div className="col-md-10 card w-80 p-3">
-                <h3>Details:</h3>
-                <p>Name: {auth?.user?.name}</p>
-                <p>Email: {auth?.user?.email}</p>
-                <p>Address: {auth?.user?.address}</p>
+      <div className="wallet-page">
+        <div className="profile-details">
+          <img src={profile.photo} alt="Profile" />
+          <h1>{profile.name}</h1>
+          <p>{profile.email}</p>
+        </div>
+        <div className="wallets">
+          {profile.wallets.map((wallet, index) => (
+            <div key={index} className="wallet">
+              <h2>{wallet.account}</h2>
+              <div className="coupons">
+                {wallet.coupons.slice(0, 2).map((coupon, i) => (
+                  <p key={i}>{coupon}</p>
+                ))}
               </div>
-              <div
-                className="col-md-10 card w-80 p-3"
-                style={{ marginTop: '50px' }}
+              <Link
+                to={{
+                  pathname: '/coupons',
+                  state: { coupons: wallet.coupons },
+                }}
               >
-                {' '}
-                {/* Added margin-top */}
-                <h3>Loyalty Points</h3>
-                {/* <p>Tokens: {auth?.user?.tokens}</p>  */}
-                <p>Tokens: </p>
-                <span
-                  role="img"
-                  aria-label="token"
-                  style={{ fontSize: '30px' }}
-                >
-                  💰💰💰
-                </span>{' '}
-                {/* Dummy token icons */}
-              </div>
+                View All Coupons
+              </Link>
             </div>
-          </div>
+          ))}
+        </div>
+        <div className="total-loyalty-points">
+          <h2>Total Loyalty Points: {profile.totalLoyaltyPoints}</h2>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default Dashboard;
+export default Wallet;
+
+// export default Dashboard;
