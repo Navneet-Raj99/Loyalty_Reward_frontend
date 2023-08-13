@@ -12,7 +12,6 @@
 
 .profile-picture {
   display: flex;
-  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -26,7 +25,7 @@
 .user-info {
   color: #333;
   font-size: 18px; /* Adjust as needed */
-  margin: 10px 0; /* Spacing between items */
+  margin: 20px 0; /* Spacing between items */
 }
 
 .user-info-label {
