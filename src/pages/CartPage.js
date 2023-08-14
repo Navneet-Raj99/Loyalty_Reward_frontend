@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from "react";
-import Layout from "./../components/Layout/Layout";
-import { useCart } from "../context/cart";
-import { useAuth } from "../context/auth";
-import { useNavigate } from "react-router-dom";
-import DropIn from "braintree-web-drop-in-react";
-import { AiFillWarning } from "react-icons/ai";
-import axios from "axios";
-import toast from "react-hot-toast";
-import "../styles/CartStyles.css";
+import React, { useState, useEffect } from 'react';
+import Layout from './../components/Layout/Layout';
+import { useCart } from '../context/cart';
+import { useAuth } from '../context/auth';
+import { useNavigate } from 'react-router-dom';
+import DropIn from 'braintree-web-drop-in-react';
+import { AiFillWarning } from 'react-icons/ai';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import '../styles/CartStyles.css';
 
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
-  const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState("");
+  const [clientToken, setClientToken] = useState('');
+  const [instance, setInstance] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   //total price
-  const checkoutHandler = async (amount) => {
+  const checkoutHandler = async amount => {
     try {
       const {
         data: { key },
-      } = await axios.get("/api/getkey");
-      console.log("====================================");
+      } = await axios.get('/api/getkey');
+      console.log('====================================');
       console.log(key);
-      console.log("====================================");
+      console.log('====================================');
       const {
         data: { order },
-      } = await axios.post("/api/v1/payment/checkout", {
+      } = await axios.post('/api/v1/payment/checkout', {
         amount,
       });
 
       const options = {
         key,
         amount: order.amount,
-        currency: "INR",
-        name: "BIKE RENTAL",
-        description: "BIKEEE",
-        image: "https://avatars.githubusercontent.com/u/25058652?v=4",
+        currency: 'INR',
+        name: 'BIKE RENTAL',
+        description: 'BIKEEE',
+        image: 'https://avatars.githubusercontent.com/u/25058652?v=4',
         order_id: order.id,
         callback_url:
-          "http://localhost:8080/api/v1/payment/paymentverification",
+          'http://localhost:8080/api/v1/payment/paymentverification',
         prefill: {
-          name: "Gaurav Kumar",
-          email: "gaurav.kumar@example.com",
-          contact: "9999999999",
+          name: 'Gaurav Kumar',
+          email: 'gaurav.kumar@example.com',
+          contact: '9999999999',
         },
         notes: {
-          address: "Razorpay Corporate Office",
+          address: 'Razorpay Corporate Office',
         },
         theme: {
-          color: "#121212",
+          color: '#121212',
         },
-        handler: async (response) => {
+        handler: async response => {
           // The response contains the razorpay_order_id, razorpay_payment_id, and razorpay_signature
           const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
             response;
@@ -63,28 +63,28 @@ const CartPage = () => {
 
           try {
             const response = await axios.post(
-              "/api/v1/payment/paymentverification",
+              '/api/v1/payment/paymentverification',
               {
                 razorpay_order_id,
                 razorpay_payment_id,
                 razorpay_signature,
                 cart,
-              }
+              },
             );
 
             if (response.data.success) {
               // Payment successful, handle success case here
               // For example, navigate to a success page or show a success message
-              console.log("Payment successful");
+              console.log('Payment successful');
               navigate(`/paymentsuccess?reference=${razorpay_payment_id}`); // Redirect to a success page
             } else {
               // Payment failed, handle failure case here
               // For example, show an error message to the user
-              console.log("Payment failed");
+              console.log('Payment failed');
             }
           } catch (error) {
             // Handle error from the server, if any
-            console.log("Error during payment verification:", error);
+            console.log('Error during payment verification:', error);
           }
         },
       };
@@ -92,32 +92,32 @@ const CartPage = () => {
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
-      console.log("Error during checkout:", error);
+      console.log('Error during checkout:', error);
     }
   };
 
   const totalPrice = () => {
     try {
       let total = 0;
-      cart?.map((item) => {
+      cart?.map(item => {
         total = total + item.price;
       });
-      return total.toLocaleString("en-US", {
-        style: "currency",
-        currency: "INR",
+      return total.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'INR',
       });
     } catch (error) {
       console.log(error);
     }
   };
   //detele item
-  const removeCartItem = (pid) => {
+  const removeCartItem = pid => {
     try {
       let myCart = [...cart];
-      let index = myCart.findIndex((item) => item._id === pid);
+      let index = myCart.findIndex(item => item._id === pid);
       myCart.splice(index, 1);
       setCart(myCart);
-      localStorage.setItem("cart", JSON.stringify(myCart));
+      localStorage.setItem('cart', JSON.stringify(myCart));
     } catch (error) {
       console.log(error);
     }
@@ -157,19 +157,19 @@ const CartPage = () => {
   // };
   return (
     <Layout>
-      <div className=" cart-page">
+      <div className="cart-page">
         <div className="row">
           <div className="col-md-12">
             <h1 className="text-center bg-light p-2 mb-1">
               {!auth?.user
-                ? "Hello Guest"
+                ? 'Hello Guest'
                 : `Hello  ${auth?.token && auth?.user?.name}`}
               <p className="text-center">
                 {cart?.length
                   ? `You Have ${cart.length} items in your cart ${
-                      auth?.token ? "" : "please login to checkout !"
+                      auth?.token ? '' : 'please login to checkout !'
                     }`
-                  : " Your Cart Is Empty"}
+                  : ' Your Cart Is Empty'}
               </p>
             </h1>
           </div>
@@ -177,7 +177,7 @@ const CartPage = () => {
         <div className="container ">
           <div className="row ">
             <div className="col-md-7  p-0 m-0">
-              {cart?.map((p) => (
+              {cart?.map(p => (
                 <div className="row card flex-row" key={p._id}>
                   <div className="col-md-4">
                     <img
@@ -185,7 +185,7 @@ const CartPage = () => {
                       className="card-img-top"
                       alt={p.name}
                       width="100%"
-                      height={"130px"}
+                      height={'130px'}
                     />
                   </div>
                   <div className="col-md-4">
@@ -204,57 +204,58 @@ const CartPage = () => {
                 </div>
               ))}
             </div>
-            <div className="col-md-5 cart-summary ">
-              <h2>Cart Summary</h2>
-              <p>Total | Checkout | Payment</p>
-              <hr />
-              <h4>Total : {totalPrice()} </h4>
-              {auth?.user?.address ? (
-                <>
+            {cart?.length > 0 ? (
+              <div className="col-md-5 cart-summary ">
+                <h2>Cart Summary</h2>
+                <p>Total | Checkout | Payment</p>
+                <hr />
+                <h4>Total : {totalPrice()} </h4>
+                {auth?.user?.address ? (
+                  <>
+                    <div className="mb-3">
+                      <h4>Current Address</h4>
+                      <h5>{auth?.user?.address}</h5>
+                      <button
+                        className="btn btn-outline-warning"
+                        onClick={() => navigate('/dashboard/user/profile')}
+                      >
+                        Update Address
+                      </button>
+                    </div>
+                  </>
+                ) : (
                   <div className="mb-3">
-                    <h4>Current Address</h4>
-                    <h5>{auth?.user?.address}</h5>
-                    <button
-                      className="btn btn-outline-warning"
-                      onClick={() => navigate("/dashboard/user/profile")}
-                    >
-                      Update Address
-                    </button>
+                    {auth?.token ? (
+                      <button
+                        className="btn btn-outline-warning"
+                        onClick={() => navigate('/dashboard/user/profile')}
+                      >
+                        Update Address
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-outline-warning"
+                        onClick={() =>
+                          navigate('/login', {
+                            state: '/cart',
+                          })
+                        }
+                      >
+                        Plase Login to checkout
+                      </button>
+                    )}
                   </div>
-                </>
-              ) : (
-                <div className="mb-3">
-                  {auth?.token ? (
-                    <button
-                      className="btn btn-outline-warning"
-                      onClick={() => navigate("/dashboard/user/profile")}
-                    >
-                      Update Address
-                    </button>
-                  ) : (
-                    <button
-                      className="btn btn-outline-warning"
-                      onClick={() =>
-                        navigate("/login", {
-                          state: "/cart",
-                        })
-                      }
-                    >
-                      Plase Login to checkout
-                    </button>
-                  )}
+                )}
+                <div className="mt-2">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => checkoutHandler(cart[0].price)}
+                  >
+                    Make Payment
+                  </button>
                 </div>
-              )}
-              <div className="mt-2">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => checkoutHandler(cart[0].price)} // Wrap the checkoutHandler call in an arrow function
-                  // disabled={loading || !instance || !auth?.user?.address}
-                >
-                  Make Payment
-                </button>
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
       </div>
