@@ -36,27 +36,19 @@ const CartPage = () => {
       const {
         data: { order },
       } = await axios.post('/api/v1/payment/checkout', {
-        amount,
+        amount: 1,
       });
-
+      console.log(cart);
       const options = {
         key,
         amount: order.amount,
         currency: 'INR',
-        name: 'BIKE RENTAL',
+        name: 'Flipkart Test',
         description: 'BIKEEE',
         image: 'https://avatars.githubusercontent.com/u/25058652?v=4',
         order_id: order.id,
         callback_url:
-          'http://localhost:8080/api/v1/payment/paymentverification',
-        prefill: {
-          name: 'Gaurav Kumar',
-          email: 'gaurav.kumar@example.com',
-          contact: '9999999999',
-        },
-        notes: {
-          address: 'Razorpay Corporate Office',
-        },
+          'http://localhost:8000/api/v1/payment/paymentverification',
         theme: {
           color: '#121212',
         },
@@ -86,7 +78,6 @@ const CartPage = () => {
               navigate(`/paymentsuccess?reference=${razorpay_payment_id}`); // Redirect to a success page
             } else {
               // Payment failed, handle failure case here
-              // For example, show an error message to the user
               console.log('Payment failed');
             }
           } catch (error) {
