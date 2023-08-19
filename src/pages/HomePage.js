@@ -157,34 +157,51 @@ const HomePage = () => {
           <h1 className="text-center">All Products</h1>
           <div className="d-flex flex-wrap">
             {products?.map(p => (
-              <div className="card m-2" key={p._id}>
-                <img
-                  src={p.imgUrl}
-                  className="card-img-top"
-                  alt={p.name}
-                />
+              <div
+                className="card m-2"
+                key={p._id}
+                style={{
+                  border: '1px solid #e0e0e0',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseOver={e =>
+                  (e.currentTarget.style.boxShadow =
+                    '0 4px 8px rgba(0, 0, 0, 0.1)')
+                }
+                onMouseOut={e => (e.currentTarget.style.boxShadow = '')}
+              >
+                <img src={p.imgUrl} className="card-img-top" alt={p.name} />
                 <div className="card-body">
-                  <div className="card-name-price">
-                    <h5 className="card-title">{p.name}</h5>
-                    <h5 className="card-title card-price">
+                  <div
+                    className="card-name-price d-flex justify-content-between align-items-center"
+                    style={{ marginBottom: '10px' }}
+                  >
+                    <h5 className="card-title">{p.name.substring(0, 20)}</h5>
+                    <h5
+                      className="card-title card-price"
+                      style={{ color: '#e44d26', fontWeight: 'bold' }}
+                    >
                       {p.price.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'INR',
                       })}
                     </h5>
                   </div>
-                  <p className="card-text ">
+                  <p className="card-text">
                     {p.description.substring(0, 60)}...
                   </p>
-                  <div className="card-name-price">
+                  <div
+                    className="card-actions d-flex justify-content-between align-items-center"
+                    style={{ marginTop: '10px' }}
+                  >
                     <button
-                      className="btn btn-info ms-1"
+                      className="btn btn-info"
                       onClick={() => navigate(`/product/${p.slug}`)}
                     >
                       More Details
                     </button>
                     <button
-                      className="btn btn-dark ms-1"
+                      className="btn btn-dark"
                       onClick={() => {
                         setCart([...cart, p]);
                         localStorage.setItem(

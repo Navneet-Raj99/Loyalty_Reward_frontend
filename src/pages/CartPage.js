@@ -212,7 +212,7 @@ const CartPage = () => {
                             background: 'none',
                             outline: 'none',
                             cursor: 'pointer',
-                            color: 'blue',
+                            color: 'blue', // You can set the color to match the link style
                           }}
                           onClick={() => toggleDescription(p._id)}
                         >
