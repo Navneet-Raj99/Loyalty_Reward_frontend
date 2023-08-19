@@ -106,6 +106,21 @@ const HomePage = () => {
       console.log(error);
     }
   };
+
+  const resetFilters = () => {
+    setChecked([]);
+    setRadio([]);
+    getAllProducts();
+  };
+
+  const handleCheckboxChange = (e, id) => {
+    if (e.target.checked) {
+      setChecked([...checked, id]);
+    } else {
+      setChecked(checked.filter(c => c !== id));
+    }
+  };
+
   return (
     <Layout title={'Style Fusion - Best offers '}>
       {/* banner image */}
@@ -127,7 +142,8 @@ const HomePage = () => {
             {categories?.map(c => (
               <Checkbox
                 key={c._id}
-                onChange={e => handleFilter(e.target.checked, c._id)}
+                checked={checked.includes(c._id)}
+                onChange={e => handleCheckboxChange(e, c._id)}
               >
                 {c.name}
               </Checkbox>
@@ -136,19 +152,19 @@ const HomePage = () => {
           {/* price filter */}
           <h4 className="text-center mt-4">Filter By Price</h4>
           <div className="d-flex flex-column">
-            <Radio.Group onChange={e => setRadio(e.target.value)}>
+            <Radio.Group value={radio} onChange={e => setRadio(e.target.value)}>
               {Prices?.map(p => (
                 <div key={p._id}>
                   <Radio value={p.array}>{p.name}</Radio>
                 </div>
               ))}
             </Radio.Group>
+            <button className="btn btn-secondary" onClick={() => setRadio([])}>
+              Clear Selection
+            </button>
           </div>
           <div className="d-flex flex-column">
-            <button
-              className="btn btn-danger"
-              onClick={() => window.location.reload()}
-            >
+            <button className="btn btn-danger" onClick={resetFilters}>
               RESET FILTERS
             </button>
           </div>
@@ -170,7 +186,14 @@ const HomePage = () => {
                 }
                 onMouseOut={e => (e.currentTarget.style.boxShadow = '')}
               >
-                <img src={p.imgUrl} className="card-img-top" alt={p.name} />
+                <img
+                  src={p.imgUrl}
+                  className="card-img-top"
+                  alt={p.name}
+                  onClick={() => navigate(`/product/${p.slug}`)}
+                  style={{ cursor: 'pointer' }} // To show a pointer cursor when hovering over the image
+                />
+
                 <div className="card-body">
                   <div
                     className="card-name-price d-flex justify-content-between align-items-center"
