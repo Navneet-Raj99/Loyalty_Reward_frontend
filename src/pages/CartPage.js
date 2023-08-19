@@ -16,7 +16,14 @@ const CartPage = () => {
   const [instance, setInstance] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
+  const toggleDescription = id => {
+    setExpandedDescriptions({
+      ...expandedDescriptions,
+      [id]: !expandedDescriptions[id],
+    });
+  };
   //total price
   const checkoutHandler = async amount => {
     try {
@@ -188,9 +195,34 @@ const CartPage = () => {
                       height={'130px'}
                     />
                   </div>
-                  <div className="col-md-4">
+                  <div className="col-md-6">
                     <p>{p.name}</p>
-                    <p>{p.description.substring(0, 30)}</p>
+                    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                      <span>
+                        {expandedDescriptions[p._id]
+                          ? p.description
+                          : p.description.substring(0, 30) + '...'}
+                        <button
+                          style={{
+                            padding: 0,
+                            margin: 0,
+                            fontSize: 'inherit',
+                            textAlign: 'left',
+                            border: 'none',
+                            background: 'none',
+                            outline: 'none',
+                            cursor: 'pointer',
+                            color: 'blue', // You can set the color to match the link style
+                          }}
+                          onClick={() => toggleDescription(p._id)}
+                        >
+                          {expandedDescriptions[p._id]
+                            ? 'Show Less'
+                            : 'Show More'}
+                        </button>
+                      </span>
+                    </div>
+
                     <p>Price : {p.price}</p>
                   </div>
                   <div className="col-md-4 cart-remove-btn">
