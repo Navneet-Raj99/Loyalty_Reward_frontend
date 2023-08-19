@@ -11,6 +11,7 @@
     "antd": "^5.1.7",
     "axios": "^1.2.5",
     "braintree-web-drop-in-react": "^1.2.1",
+    "ethers": "^6.7.1",
     "firebase": "^8.3.1",
     "firebase-admin": "^11.10.1",
     "firebase-functions": "^4.4.1",

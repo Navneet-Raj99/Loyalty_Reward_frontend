@@ -1,18 +1,55 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import toast from 'react-hot-toast';
 import SearchInput from '../Form/SearchInput';
 import useCategory from '../../hooks/useCategory';
 import { useCart } from '../../context/cart';
 import { Badge } from 'antd';
-import {firebase} from '../../pages/Auth/Firebase';
+import { firebase } from '../../pages/Auth/Firebase';
+import { connectWallet } from '../../helper';
 
 const Header = () => {
-  const [auth, setAuth] = useAuth();
+  const [auth, setAuth, account, setAccount] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
-  const handleLogout = async() => {
+
+  const navigate = useNavigate()
+  const logout = async (value) => {
+
+    window.location.reload("/");
+
+  };
+
+
+  const onLogout = () => {
+    try {
+      navigate("/")
+      logout()
+
+    } catch (error) {
+
+    }
+  }
+
+  const onClick = async () => {
+    try {
+      await window.ethereum.request({ method: 'eth_accounts' });
+      await window.ethereum.request({ method: 'wallet_requestPermissions', params: [{ eth_accounts: {} }] });
+      await window.ethereum.request({ method: 'eth_accounts' });
+      const response = await connectWallet();
+      // console.log(response);
+      if (response.accountFound === true) {
+        console.log({"Wallet Connected":response?.account})
+        setAccount(response.account);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const handleLogout = async () => {
     setAuth({
       ...auth,
       user: null,
@@ -81,16 +118,26 @@ const Header = () => {
 
               {/* Add Wallet Icon Link Here */}
               {
-                auth?.user ?(
-                <li className="nav-item">
-                <NavLink to="/wallet" className="nav-link">
-                  <i class="fa-solid fa-wallet fa-beat"></i>
-                </NavLink>
-              </li>
+                (auth?.user && account == "") ? (
+                  <li className="nav-item nav-link ">
+
+                    <i class="fa-solid fa-wallet fa-beat " onClick={onClick}></i>
+
+                  </li>
                 ) : (
-                <></>  
-                ) 
+                  <></>
+                )
               }
+              {account && (
+                <div style={{ display: "flex", justifyContent: "space-around" }}>
+                  <div style={{ cursor: "pointer", backgroundColor: "#530ac4", marginRight: "10px" }} className="text-white my-auto p-2 rounded-2 connected_account">
+                    Account : {account.substring(0, 4)}....{account.substring(account.length - 4, account.length)}
+                  </div>
+                  <CustomButton title="Logout" onClick={onLogout} />
+                  {/* <BiLogOut/> */}
+
+                </div>
+              )}
 
               {!auth?.user ? (
                 <>
@@ -120,9 +167,8 @@ const Header = () => {
                     <ul className="dropdown-menu">
                       <li>
                         <NavLink
-                          to={`/dashboard/${
-                            auth?.user?.isSeller === 1 ? 'admin' : 'user'
-                          }`}
+                          to={`/dashboard/${auth?.user?.isSeller === 1 ? 'admin' : 'user'
+                            }`}
                           className="dropdown-item"
                         >
                           Dashboard
@@ -153,6 +199,15 @@ const Header = () => {
         </div>
       </nav>
     </>
+  );
+};
+
+const CustomButton = (props) => {
+  const { title, onClick, disabled = false } = props;
+  return (
+    <div disabled={disabled} style={{ cursor: "pointer", backgroundColor: "#42145F", textAlign: "center" }} className="text-white my-auto p-2 rounded-2" onClick={onClick}>
+      {title === "Logout" ? <>Logout</> : title}
+    </div>
   );
 };
 
