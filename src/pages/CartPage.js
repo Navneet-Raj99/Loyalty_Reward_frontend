@@ -188,7 +188,7 @@ const CartPage = () => {
                       height={'130px'}
                     />
                   </div>
-                  <div className="col-md-4">
+                  <div className="col-md-7">
                     <p>{p.name}</p>
                     <p>{p.description.substring(0, 30)}</p>
                     <p>Price : {p.price}</p>
