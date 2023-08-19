@@ -9,6 +9,7 @@ const AuthProvider = ({ children }) => {
   });
 
   const [account,setAccount]= useState("");
+  const [signature,setsignature]= useState("");
 
 
   //default axios
@@ -27,7 +28,7 @@ const AuthProvider = ({ children }) => {
     //eslint-disable-next-line
   }, []);
   return (
-    <AuthContext.Provider value={[auth, setAuth, account,setAccount]}>
+    <AuthContext.Provider value={[auth, setAuth, account,setAccount, signature,setsignature]}>
       {children}
     </AuthContext.Provider>
   );

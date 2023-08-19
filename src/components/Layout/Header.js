@@ -7,10 +7,12 @@ import useCategory from '../../hooks/useCategory';
 import { useCart } from '../../context/cart';
 import { Badge } from 'antd';
 import { firebase } from '../../pages/Auth/Firebase';
-import { connectWallet } from '../../helper';
+import { connectWallet, signMessage } from '../../helper';
+
+// const { ethers } = require('ethers');
 
 const Header = () => {
-  const [auth, setAuth, account, setAccount] = useAuth();
+  const [auth, setAuth, account, setAccount, signature,setsignature] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
 
@@ -21,6 +23,9 @@ const Header = () => {
 
   };
 
+  // const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+
+  
 
   const onLogout = () => {
     try {
@@ -42,6 +47,10 @@ const Header = () => {
       if (response.accountFound === true) {
         console.log({"Wallet Connected":response?.account})
         setAccount(response.account);
+        const { signature, address } = await signMessage("Please sign your public address for authorized API calls");
+
+        setsignature(signature);
+        console.log(signature);
       }
     } catch (error) {
       console.log(error);
