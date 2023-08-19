@@ -6,10 +6,11 @@ import axios from "axios";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import { PutObjectCommand, S3Client  } from "@aws-sdk/client-s3";
-
+import { useAuth } from '../../context/auth';
 const { Option } = Select;
 
 const CreateProduct = () => {
+  const [auth] = useAuth();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
@@ -73,6 +74,7 @@ const CreateProduct = () => {
       productData.append("photo", photo);
       productData.append("category", category);
       productData.append("imgUrl", imgUrl);
+      productData.append("sellerId",auth.user.sellerId);
       const { data } = axios.post(
         "/api/v1/product/create-product",
         productData

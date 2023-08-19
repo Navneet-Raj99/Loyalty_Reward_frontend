@@ -6,6 +6,7 @@ import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { PutObjectCommand, S3Client  } from "@aws-sdk/client-s3";
+import { useAuth } from "../../context/auth";
 
 const { Option } = Select;
 const client = new S3Client({
@@ -16,6 +17,7 @@ const client = new S3Client({
   region: process.env.REACT_APP_REGION,
 });
 const UpdateProduct = () => {
+  const [auth] = useAuth();
   const navigate = useNavigate();
   const params = useParams();
   const [categories, setCategories] = useState([]);
@@ -107,6 +109,7 @@ const UpdateProduct = () => {
       photo && productData.append("photo", photo);
       productData.append("category", category);
       productData.append("imgUrl", imgUrl);
+      productData.append("sellerId", auth.user.sellerId);
       const { data } = axios.put(
         `/api/v1/product/update-product/${id}`,
         productData
