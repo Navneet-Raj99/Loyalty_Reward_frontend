@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import toast from 'react-hot-toast';
@@ -8,6 +8,8 @@ import { useCart } from '../../context/cart';
 import { Badge } from 'antd';
 import { firebase } from '../../pages/Auth/Firebase';
 import { connectWallet, signMessage } from '../../helper';
+import { ethers } from 'ethers';
+import { ABI } from '../../abi/abi';
 
 // const { ethers } = require('ethers');
 
@@ -23,7 +25,33 @@ const Header = () => {
 
   };
 
-  // const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+  const provider = new ethers.providers.JsonRpcProvider('HTTP://127.0.0.1:7545');
+  const contractABI = ABI.CUSTOMNFT;
+
+  const contractAddress = '0x8B0B092B0e2C3e652cAf9152774eBc3f662dbd3e';
+
+  const contract = new ethers.Contract(contractAddress, contractABI, provider);
+
+  // Call a function
+async function getNFTDataByWallet(wallet) {
+  const nftData = await contract.getNFTsByWallet(wallet);
+  console.log({nftData});
+}
+
+// Send a transaction
+async function issueNFT(wallet, imageUrl, nftType, value, sellerId) {
+  console.log("entered");
+  const signer = provider.getSigner();
+  const contractWithSigner = contract.connect(signer);
+
+  const gasLimit = await contractWithSigner.estimateGas.issueNFT(wallet, imageUrl, nftType, value, sellerId);
+  const tx = await contractWithSigner.issueNFT(wallet, imageUrl, nftType, value,sellerId, { gasLimit });
+  console.log(tx);
+}
+
+useEffect(() => {
+ 
+}, [])
 
   
 
@@ -139,7 +167,12 @@ const Header = () => {
               }
               {account && (
                 <div style={{ display: "flex", justifyContent: "space-around" }}>
-                  <div style={{ cursor: "pointer", backgroundColor: "#530ac4", marginRight: "10px" }} className="text-white my-auto p-2 rounded-2 connected_account">
+                  <div style={{ cursor: "pointer", backgroundColor: "#530ac4", marginRight: "10px" }} className="text-white my-auto p-2 rounded-2 connected_account" onClick={async ()=>
+                  {
+                    let imageURl="https://th-i.thgim.com/public/incoming/ukcw2z/article66000467.ece/alternates/FREE_1200/Saravanan%20%20postman%201.jpg"
+                  //  await issueNFT(account,imageURl, 1, 300,"qwertr" );
+                   await getNFTDataByWallet(account);
+                  }}>
                     Account : {account.substring(0, 4)}....{account.substring(account.length - 4, account.length)}
                   </div>
                   <CustomButton title="Logout" onClick={onLogout} />
