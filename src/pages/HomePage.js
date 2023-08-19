@@ -179,7 +179,7 @@ const HomePage = () => {
                     <h5 className="card-title">{p.name.substring(0, 20)}</h5>
                     <h5
                       className="card-title card-price"
-                      style={{ color: '#e44d26', fontWeight: 'bold' }}
+                      style={{ fontWeight: 'bold' }}
                     >
                       {p.price.toLocaleString('en-US', {
                         style: 'currency',
