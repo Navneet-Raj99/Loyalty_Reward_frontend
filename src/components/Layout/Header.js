@@ -164,7 +164,7 @@ useEffect(() => {
                 (auth?.user && account == "") ? (
                   <li className="nav-item nav-link ">
 
-                    <i class="fa-solid fa-wallet fa-beat " onClick={onClick}></i>
+                    <i className="fa-solid fa-wallet fa-beat " onClick={onClick}></i>
 
                   </li>
                 ) : (

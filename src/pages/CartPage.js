@@ -17,7 +17,7 @@ const CartPage = () => {
   const [instance, setInstance] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [isOpen,setisOpen]= useState(false);
+  const [isOpen, setisOpen] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   const toggleDescription = id => {
@@ -69,8 +69,7 @@ const CartPage = () => {
                 razorpay_order_id,
                 razorpay_payment_id,
                 razorpay_signature,
-                cart,
-                account
+                cart
               },
             );
 
@@ -279,14 +278,14 @@ const CartPage = () => {
                     Make Payment
                   </button>
                 </div>
-                <div className="mt-2">
+                {account != "" && <div className="mt-2">
                   <button
                     className="btn btn-danger"
                     onClick={() => setisOpen(true)}
                   >
                     Use Reward Points
                   </button>
-                </div>
+                </div>}
               </div>
             ) : null}
           </div>
@@ -297,42 +296,126 @@ const CartPage = () => {
   );
 };
 
-export const TokenModal =(isOpen,setisOpen) =>
-{
+export function NFTCard({ imageUrl, nftType, value, onClick, isSelected }) {
+  const cardStyle = {
+    border: isSelected ? '2px solid blue' : '1px solid #ccc',
+    padding: '10px',
+    margin: '10px',
+    width: '150px',
+    textAlign: 'center',
+    cursor: 'pointer'
+  };
+  
+  return (
+    <div className="nft-card" style={cardStyle} onClick={onClick}>
+      <img src={"https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg"} alt="NFT" />
+      <p>Type: {nftType}</p>
+      <p>Value: {value}</p>
+    </div>
+  );
+}
+
+export const TokenModal = (isOpen, setisOpen) => {
+  useEffect(() => {
+
+  }, [])
+
+  const [selectedNFTs, setSelectedNFTs] = useState([]);
+
+  const toggleNFTSelection = (index) => {
+    if (selectedNFTs.includes(index)) {
+      setSelectedNFTs(selectedNFTs.filter((item) => item !== index));
+    } else {
+      setSelectedNFTs([...selectedNFTs, index]);
+    }
+    console.log(selectedNFTs)
+  };
+
+
   const nfts = [
     {
-        imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
-        nftType: 'Type A',
-        value: 100
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      nftType: 'Type A',
+      value: 100
     },
     {
-        imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
-        nftType: 'Type B',
-        value: 200
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      nftType: 'Type B',
+      value: 200
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      nftType: 'Type A',
+      value: 100
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      nftType: 'Type B',
+      value: 200
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      nftType: 'Type A',
+      value: 100
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      nftType: 'Type B',
+      value: 200
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      nftType: 'Type A',
+      value: 100
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      nftType: 'Type B',
+      value: 200
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      nftType: 'Type A',
+      value: 100
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      nftType: 'Type B',
+      value: 200
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      nftType: 'Type A',
+      value: 100
+    },
+    {
+      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      nftType: 'Type B',
+      value: 200
     },
     // Add more NFT objects
-];
+  ];
   return (
     <Modal
-        isOpen={isOpen}
-        // onRequestClose={onRequestClose}
-        // contentLabel="NFT Modal"
+      isOpen={isOpen}
+    // onRequestClose={onRequestClose}
+    // contentLabel="NFT Modal"
     >
-        <div>
-            <h2>NFTs</h2>
-            <ul>
-                {nfts.map((nft, index) => (
-                    <li key={index}>
-                        <img src={nft.imageUrl} alt={`NFT ${index}`} />
-                        <p>Type: {nft.nftType}</p>
-                        <p>Value: {nft.value}</p>
-                    </li>
-                ))}
-            </ul>
-            <button onClick={()=>setisOpen(false)}>Close</button>
+      <div style={{ marginTop: "30px" }}>
+        <h2>NFTs</h2>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {nfts.map((nft, index) => (
+
+            <NFTCard imgUrl={nft.imageUrl} nftType={nft.nftType} value={nft.value} isSelected={selectedNFTs.includes(index)} onClick={() => toggleNFTSelection(index)} />
+          ))}
         </div>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+          <button className="close-button" onClick={() => setisOpen(false)}>Close</button>
+        </div>
+
+      </div>
     </Modal>
-);
+  );
 }
 
 export default CartPage;

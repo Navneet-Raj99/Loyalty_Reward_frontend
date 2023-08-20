@@ -1,6 +1,42 @@
 .cart-page {
   margin-top: 64px;
 }
+.nft-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 350px;
+  text-align: center;
+  cursor: pointer;
+}
+.close-button {
+  background-color: red;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  align-self: center;
+  align-items: center;
+}
+
+.close-button:hover {
+  background-color: #555;
+}
+
+.nft-card img {
+  max-width: 100%;
+  height: auto;
+}
+.nft-card.selected {
+  border: 2px solid blue;
+}
+.nft-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 
 .cart-page h1 {
   padding: 15px !important;

@@ -11,6 +11,8 @@ const AuthProvider = ({ children }) => {
   const [account,setAccount]= useState("");
   const [signature,setsignature]= useState("");
 
+  const [tokenInUse,settokenInUse]= useState([]);
+
 
   //default axios
   axios.defaults.headers.common["Authorization"] = auth?.token;
@@ -28,7 +30,7 @@ const AuthProvider = ({ children }) => {
     //eslint-disable-next-line
   }, []);
   return (
-    <AuthContext.Provider value={[auth, setAuth, account,setAccount, signature,setsignature]}>
+    <AuthContext.Provider value={[auth, setAuth, account,setAccount, signature,setsignature, tokenInUse,settokenInUse]}>
       {children}
     </AuthContext.Provider>
   );
