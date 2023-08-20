@@ -72,7 +72,7 @@ const CartPage = () => {
                 razorpay_payment_id,
                 razorpay_signature,
                 cart,
-                account
+                account,
               },
             );
 
@@ -173,8 +173,9 @@ if(total-totalValue>=0)
                 : `Hello  ${auth?.token && auth?.user?.name}`}
               <p className="text-center">
                 {cart?.length
-                  ? `You Have ${cart.length} items in your cart ${auth?.token ? '' : 'please login to checkout !'
-                  }`
+                  ? `You Have ${cart.length} items in your cart ${
+                      auth?.token ? '' : 'please login to checkout !'
+                    }`
                   : ' Your Cart Is Empty'}
               </p>
             </h1>
@@ -306,16 +307,16 @@ if(total-totalValue>=0)
   );
 };
 
-export function NFTCard({nftData, onClick, isSelected }) {
+export function NFTCard({ nftData, onClick, isSelected }) {
   const cardStyle = {
     border: isSelected ? '2px solid blue' : '1px solid #ccc',
     padding: '10px',
     margin: '10px',
     width: '150px',
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   };
-  
+
   return (
     <div className="nft-card" style={cardStyle} onClick={onClick}>
       <img src={nftData?.imageUrl} alt="NFT" />
@@ -350,64 +351,76 @@ Modal.setAppElement('#root');
 
   const nfts = [
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     // Add more NFT objects
   ];
@@ -421,12 +434,38 @@ Modal.setAppElement('#root');
   return (
     <Modal
       isOpen={isOpen}
-    // onRequestClose={closeModal}
-    // contentLabel="NFT Modal"
+      style={{
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80%',
+          height: '80%',
+          overflowY: 'auto',
+          padding: '30px',
+          boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+          borderRadius: '10px',
+        },
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+      }}
+      // onRequestClose={closeModal}
+      // contentLabel="NFT Modal"
     >
-      <div style={{ marginTop: "30px" }}>
+      <div>
         <h2>NFTs</h2>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '20px',
+            marginBottom: '20px',
+          }}
+        >
           {nfts.map((nft, index) => (
 
             <NFTCard nftData={nft}  isSelected={tokenInUse.some((nft) => nft.index === index)} onClick={() => toggleNFTSelection(index, nft)} />
@@ -440,10 +479,9 @@ Modal.setAppElement('#root');
           
           }}>Close</button>
         </div>
-
       </div>
     </Modal>
   );
-}
+};
 
 export default CartPage;
