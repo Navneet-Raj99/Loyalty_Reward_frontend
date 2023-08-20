@@ -21,6 +21,12 @@ const UserMenu = () => {
           >
             Orders
           </NavLink>
+          <NavLink
+            to="/dashboard/user/nftsEarned"
+            className="list-group-item list-group-item-action"
+          >
+            NFTs Earned
+          </NavLink>
         </div>
       </div>
     </div>

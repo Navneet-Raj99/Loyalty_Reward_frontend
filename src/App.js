@@ -33,6 +33,8 @@ import PrivacyPolicy from './components/FooterReq/PrivacyPolicy';
 import RefundPolicy from './components/FooterReq/RefundPolicy';
 import Coupons from './pages/Coupons';
 import Terms from './pages/Terms';
+import NftsEarned from './pages/user/nftsEarned';
+
 function App() {
   return (
     <>
@@ -53,6 +55,7 @@ function App() {
           <Route path="user" element={<Dashboard />} />
           <Route path="user/orders" element={<Orders />} />
           <Route path="user/profile" element={<Profile />} />
+          <Route path="user/nftsEarned" element={<NftsEarned/>}/>
         </Route>
         <Route path="/dashboard" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />
