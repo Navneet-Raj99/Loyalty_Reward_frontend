@@ -26,10 +26,13 @@ const Header = () => {
 
   };
 
+  //For testing
+
+  
   const provider = new ethers.providers.JsonRpcProvider('HTTP://127.0.0.1:7545');
   const contractABI = ABI.CUSTOMNFT;
 
-  const contractAddress = '0x8B0B092B0e2C3e652cAf9152774eBc3f662dbd3e';
+  const contractAddress = '0xdB5Ea1F7f8dF0F806E9a2dDeD9bEFeEc640Bfe87';
 
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
 

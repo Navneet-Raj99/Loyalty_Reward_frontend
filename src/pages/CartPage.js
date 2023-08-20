@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import '../styles/CartStyles.css';
 import Modal from 'react-modal';
 import { hexToDecimal } from '../helper';
+import { SOURCE_MAPPING } from '../constant';
 
 const CartPage = () => {
   const [
@@ -242,7 +243,7 @@ const CartPage = () => {
                       </span>
                     </div>
 
-                    <p>Price : {p.price}</p>
+                    <p>Price : 	&#8377;{p.price}</p>
                   </div>
                   <div className="col-md-4 cart-remove-btn">
                     <button
@@ -340,7 +341,7 @@ const CartPage = () => {
 };
 
 export function NFTCard({ nftData, onClick, isSelected, id, expiredNFT }) {
-  console.log(expiredNFT[id]?.[1], 'jkjkjkj');
+  // console.log(expiredNFT[id]?.[1],id, 'jkjkjkj');
 
   const cardStyle = {
     backgroundColor: expiredNFT[id]?.[1] ? 'lightgrey' : 'white',
@@ -349,11 +350,11 @@ export function NFTCard({ nftData, onClick, isSelected, id, expiredNFT }) {
     padding: '20px',
     margin: '10px',
     width: '180px',
-    height: '250px', // Fixed height
+    height: '300px', // Fixed height
     textAlign: 'center',
     cursor: 'pointer',
     pointerEvents: expiredNFT[id]?.[1] && 'none',
-    backgroundColor: 'white', // Background color
+    // backgroundColor: 'white', // Background color
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Shadow effect
     transition: 'transform 0.3s ease-in-out', // Smooth transform transition
     ':hover': {
@@ -373,16 +374,23 @@ export function NFTCard({ nftData, onClick, isSelected, id, expiredNFT }) {
     fontSize: '18px', // Font size for title
     fontWeight: 'bold', // Bold text for title
   };
-
+  const type = {
+    fontSize: '18px', // Font size for title
+    fontWeight: 'bold', // Bold text for title
+    backgroundColor:"grey",
+    color:"white",
+  
+  
+  };
   const descriptionStyle = {
     fontSize: '14px',
   };
   return (
     <div className="nft-card" style={cardStyle} onClick={onClick}>
       <img src={nftData[0]} alt="NFT" />
-      <p>Type: {hexToDecimal(nftData[1]?.hex)}</p>
-      <p>Value: {hexToDecimal(nftData[2]?.hex)}</p>
-      <p> {expiredNFT[id]?.[1] ? 'Expired' : 'Available'}</p>
+      <p style={titleStyle}>BY: {SOURCE_MAPPING[hexToDecimal(nftData[1]?.hex)]}</p>
+      <p style={descriptionStyle}>Coupon: 	&#8377; {hexToDecimal(nftData[2]?.hex)}</p>
+      <p style={type}> {expiredNFT[id]?.[1] ? 'Expired' : 'Available'}</p>
     </div>
   );
 }
@@ -407,7 +415,7 @@ export const TokenModal = ({
       signature,
       address,
     });
-    // console.log(data?.array);
+    console.log(data?.array);
     setoriginalNFT(data?.array);
   };
 
@@ -416,7 +424,7 @@ export const TokenModal = ({
       signature,
       address,
     });
-    // console.log(data?.array);
+    console.log(data?.array);
 
     setexpiredNFT(data?.array);
   };
@@ -613,7 +621,7 @@ export const TokenModal = ({
             marginBottom: '20px',
           }}
         >
-          {originalNFT.map((nft, index) => (
+          { (originalNFT?.length >0) ? originalNFT.map((nft, index) => (
             <NFTCard
               nftData={nft}
               key={index}
@@ -622,7 +630,7 @@ export const TokenModal = ({
               onClick={() => toggleNFTSelection(index, nft)}
               expiredNFT={expiredNFT}
             />
-          ))}
+          )): <h3>No Available Reward Points</h3>}
         </div>
         <div
           style={{
