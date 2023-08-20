@@ -296,7 +296,7 @@ const CartPage = () => {
   );
 };
 
-export function NFTCard({ imageUrl, nftType, value, onClick, isSelected }) {
+export function NFTCard({nftData, onClick, isSelected }) {
   const cardStyle = {
     border: isSelected ? '2px solid blue' : '1px solid #ccc',
     padding: '10px',
@@ -308,9 +308,9 @@ export function NFTCard({ imageUrl, nftType, value, onClick, isSelected }) {
   
   return (
     <div className="nft-card" style={cardStyle} onClick={onClick}>
-      <img src={"https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg"} alt="NFT" />
-      <p>Type: {nftType}</p>
-      <p>Value: {value}</p>
+      <img src={nftData?.imageUrl} alt="NFT" />
+      <p>Type: {nftData?.nftType}</p>
+      <p>Value: {nftData?.value}</p>
     </div>
   );
 }
@@ -406,7 +406,7 @@ export const TokenModal = (isOpen, setisOpen) => {
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {nfts.map((nft, index) => (
 
-            <NFTCard imgUrl={nft.imageUrl} nftType={nft.nftType} value={nft.value} isSelected={selectedNFTs.includes(index)} onClick={() => toggleNFTSelection(index)} />
+            <NFTCard nftData={nft}  isSelected={selectedNFTs.includes(index)} onClick={() => toggleNFTSelection(index)} />
           ))}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
