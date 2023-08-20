@@ -300,7 +300,7 @@ if(total-totalValue>=0)
             ) : null}
           </div>
         </div>
-        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} totalValue={totalValue} setTotalValue={setTotalValue} />}
+        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} totalValue={totalValue} setTotalValue={setTotalValue} originalCost={totalPrice(0)} />}
       </div>
     </Layout>
   );
@@ -325,8 +325,9 @@ export function NFTCard({ nftData, onClick, isSelected }) {
   );
 }
 
-export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalValue ,setTotalValue }) => {
+export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalValue ,setTotalValue, originalCost }) => {
 
+  // const [totalValue1, setTotalValue1] = useState(0);
 
   const [selectedNFTs, setSelectedNFTs] = useState([]);
 console.log(tokenInUse);
@@ -336,7 +337,15 @@ console.log(tokenInUse);
     if (isSelected) {
       settokenInUse(tokenInUse.filter((nft) => nft.index !== index));
   } else {
+    const newTotalValue = totalValue + nft?.value;
+    setTotalValue(newTotalValue);
+    console.log(newTotalValue,originalCost,"mmmmmmm");
+    if (newTotalValue > 1000) {
+      toast.error('Value threshold exceeded. Cannot select more NFTs.');
+  } else {
     settokenInUse([...tokenInUse, { index, value:nft?.value }]);
+  }
+    
   }
     // if (tokenInUse.includes(index)) {
     //   settokenInUse(tokenInUse.filter((item) => item !== index));
