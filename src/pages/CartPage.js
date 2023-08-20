@@ -20,6 +20,9 @@ const CartPage = () => {
   const [isOpen, setisOpen] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
+  const [totalValue, setTotalValue] = useState(0);
+  
+
   const toggleDescription = id => {
     setExpandedDescriptions({
       ...expandedDescriptions,
@@ -96,12 +99,16 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice = () => {
+  const totalPrice = (totalvalue) => {
     try {
       let total = 0;
       cart?.map(item => {
         total = total + item.price;
       });
+if(total-totalValue>=0)
+{
+  total=total-totalValue;
+}
       return total.toLocaleString('en-US', {
         style: 'currency',
         currency: 'INR',
@@ -233,7 +240,7 @@ const CartPage = () => {
                 <h2>Cart Summary</h2>
                 <p>Total | Checkout | Payment</p>
                 <hr />
-                <h4>Total : {totalPrice()} </h4>
+                <h4>Total : {totalPrice(totalValue)} </h4>
                 {auth?.user?.address ? (
                   <>
                     <div className="mb-3">
@@ -285,12 +292,15 @@ const CartPage = () => {
                   >
                     Use Reward Points
                   </button>
+
+                  <br/>
+                  {tokenInUse.length} Reward Points Selected
                 </div>}
               </div>
             ) : null}
           </div>
         </div>
-        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} />}
+        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} totalValue={totalValue} setTotalValue={setTotalValue} />}
       </div>
     </Layout>
   );
@@ -315,20 +325,25 @@ export function NFTCard({nftData, onClick, isSelected }) {
   );
 }
 
-export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse}) => {
-  useEffect(() => {
+export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalValue ,setTotalValue }) => {
 
-  }, [])
 
   const [selectedNFTs, setSelectedNFTs] = useState([]);
+console.log(tokenInUse);
+  const toggleNFTSelection = (index, nft) => {
+    const isSelected = tokenInUse.some((nft) => nft.index === index);
 
-  const toggleNFTSelection = (index) => {
-    if (tokenInUse.includes(index)) {
-      settokenInUse(tokenInUse.filter((item) => item !== index));
-    } else {
-      settokenInUse([...tokenInUse, index]);
-    }
-    console.log(tokenInUse)
+    if (isSelected) {
+      settokenInUse(tokenInUse.filter((nft) => nft.index !== index));
+  } else {
+    settokenInUse([...tokenInUse, { index, value:nft?.value }]);
+  }
+    // if (tokenInUse.includes(index)) {
+    //   settokenInUse(tokenInUse.filter((item) => item !== index));
+    // } else {
+    //   settokenInUse([...tokenInUse, index]);
+    // }
+    // console.log(tokenInUse)
   };
 
 Modal.setAppElement('#root');
@@ -396,6 +411,13 @@ Modal.setAppElement('#root');
     },
     // Add more NFT objects
   ];
+
+  
+  useEffect(() => {
+    const newTotalValue = tokenInUse.reduce((sum, nft) => sum + nfts[nft.index].value, 0);
+    setTotalValue(newTotalValue);
+}, [tokenInUse, nfts]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -407,7 +429,7 @@ Modal.setAppElement('#root');
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {nfts.map((nft, index) => (
 
-            <NFTCard nftData={nft}  isSelected={tokenInUse?.includes(index)} onClick={() => toggleNFTSelection(index)} />
+            <NFTCard nftData={nft}  isSelected={tokenInUse.some((nft) => nft.index === index)} onClick={() => toggleNFTSelection(index, nft)} />
           ))}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
