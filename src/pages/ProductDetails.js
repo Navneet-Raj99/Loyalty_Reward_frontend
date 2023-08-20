@@ -101,7 +101,13 @@ const ProductDetails = () => {
             <div className="d-flex flex-wrap">
               {relatedProducts?.map(p => (
                 <div className="card m-2" key={p._id}>
-                  <img src={p.imgUrl} className="card-img-top" alt={p.name} />
+                  <img
+                    src={p.imgUrl}
+                    className="card-img-top"
+                    alt={p.name}
+                    onClick={() => navigate(`/product/${p.slug}`)}
+                    style={{ cursor: 'pointer' }}
+                  />
                   <div className="card-body">
                     <div className="card-name-price">
                       <h5 className="card-title">{p.name.substring(0, 20)}</h5>

@@ -11,7 +11,7 @@ import '../styles/CartStyles.css';
 import Modal from 'react-modal';
 
 const CartPage = () => {
-  const [auth, setAuth, account] = useAuth();
+  const [auth, setAuth, account,setAccount, signature,setsignature, tokenInUse,settokenInUse] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState('');
   const [instance, setInstance] = useState('');
@@ -19,6 +19,9 @@ const CartPage = () => {
   const navigate = useNavigate();
   const [isOpen, setisOpen] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const [totalValue, setTotalValue] = useState(0);
+  
 
   const toggleDescription = id => {
     setExpandedDescriptions({
@@ -69,7 +72,7 @@ const CartPage = () => {
                 razorpay_payment_id,
                 razorpay_signature,
                 cart,
-                account
+                account,
               },
             );
 
@@ -96,12 +99,16 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice = () => {
+  const totalPrice = (totalvalue) => {
     try {
       let total = 0;
       cart?.map(item => {
         total = total + item.price;
       });
+if(total-totalValue>=0)
+{
+  total=total-totalValue;
+}
       return total.toLocaleString('en-US', {
         style: 'currency',
         currency: 'INR',
@@ -166,8 +173,9 @@ const CartPage = () => {
                 : `Hello  ${auth?.token && auth?.user?.name}`}
               <p className="text-center">
                 {cart?.length
-                  ? `You Have ${cart.length} items in your cart ${auth?.token ? '' : 'please login to checkout !'
-                  }`
+                  ? `You Have ${cart.length} items in your cart ${
+                      auth?.token ? '' : 'please login to checkout !'
+                    }`
                   : ' Your Cart Is Empty'}
               </p>
             </h1>
@@ -233,7 +241,7 @@ const CartPage = () => {
                 <h2>Cart Summary</h2>
                 <p>Total | Checkout | Payment</p>
                 <hr />
-                <h4>Total : {totalPrice()} </h4>
+                <h4>Total : {totalPrice(totalValue)} </h4>
                 {auth?.user?.address ? (
                   <>
                     <div className="mb-3">
@@ -285,27 +293,30 @@ const CartPage = () => {
                   >
                     Use Reward Points
                   </button>
+
+                  <br/>
+                  {tokenInUse.length} Reward Points Selected
                 </div>}
               </div>
             ) : null}
           </div>
         </div>
-        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} />}
+        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} totalValue={totalValue} setTotalValue={setTotalValue} />}
       </div>
     </Layout>
   );
 };
 
-export function NFTCard({nftData, onClick, isSelected }) {
+export function NFTCard({ nftData, onClick, isSelected }) {
   const cardStyle = {
     border: isSelected ? '2px solid blue' : '1px solid #ccc',
     padding: '10px',
     margin: '10px',
     width: '150px',
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   };
-  
+
   return (
     <div className="nft-card" style={cardStyle} onClick={onClick}>
       <img src={nftData?.imageUrl} alt="NFT" />
@@ -315,107 +326,162 @@ export function NFTCard({nftData, onClick, isSelected }) {
   );
 }
 
-export const TokenModal = (isOpen, setisOpen) => {
-  useEffect(() => {
+export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalValue ,setTotalValue }) => {
 
-  }, [])
 
   const [selectedNFTs, setSelectedNFTs] = useState([]);
+console.log(tokenInUse);
+  const toggleNFTSelection = (index, nft) => {
+    const isSelected = tokenInUse.some((nft) => nft.index === index);
 
-  const toggleNFTSelection = (index) => {
-    if (selectedNFTs.includes(index)) {
-      setSelectedNFTs(selectedNFTs.filter((item) => item !== index));
-    } else {
-      setSelectedNFTs([...selectedNFTs, index]);
-    }
-    console.log(selectedNFTs)
+    if (isSelected) {
+      settokenInUse(tokenInUse.filter((nft) => nft.index !== index));
+  } else {
+    settokenInUse([...tokenInUse, { index, value:nft?.value }]);
+  }
+    // if (tokenInUse.includes(index)) {
+    //   settokenInUse(tokenInUse.filter((item) => item !== index));
+    // } else {
+    //   settokenInUse([...tokenInUse, index]);
+    // }
+    // console.log(tokenInUse)
   };
 
+Modal.setAppElement('#root');
 
   const nfts = [
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
       nftType: 'Type A',
-      value: 100
+      value: 100,
     },
     {
-      imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+      imageUrl:
+        'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
       nftType: 'Type B',
-      value: 200
+      value: 200,
     },
     // Add more NFT objects
   ];
+
+  
+  useEffect(() => {
+    const newTotalValue = tokenInUse.reduce((sum, nft) => sum + nfts[nft.index].value, 0);
+    setTotalValue(newTotalValue);
+}, [tokenInUse, nfts]);
+
   return (
     <Modal
       isOpen={isOpen}
-    // onRequestClose={onRequestClose}
-    // contentLabel="NFT Modal"
+      style={{
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80%',
+          height: '80%',
+          overflowY: 'auto',
+          padding: '30px',
+          boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+          borderRadius: '10px',
+        },
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+      }}
+      // onRequestClose={closeModal}
+      // contentLabel="NFT Modal"
     >
-      <div style={{ marginTop: "30px" }}>
+      <div>
         <h2>NFTs</h2>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '20px',
+            marginBottom: '20px',
+          }}
+        >
           {nfts.map((nft, index) => (
 
-            <NFTCard nftData={nft}  isSelected={selectedNFTs.includes(index)} onClick={() => toggleNFTSelection(index)} />
+            <NFTCard nftData={nft}  isSelected={tokenInUse.some((nft) => nft.index === index)} onClick={() => toggleNFTSelection(index, nft)} />
           ))}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-          <button className="close-button" onClick={() => setisOpen(false)}>Close</button>
-        </div>
+          <button className="close-button" onClick={()=>
+          {
 
+              setisOpen(false);
+          
+          }}>Close</button>
+        </div>
       </div>
     </Modal>
   );
-}
+};
 
 export default CartPage;
