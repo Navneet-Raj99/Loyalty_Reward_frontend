@@ -15,7 +15,7 @@ import { ABI } from '../../abi/abi';
 
 const Header = () => {
   const [auth, setAuth, account, setAccount, signature,setsignature] = useAuth();
-  const [cart] = useCart();
+  const [cart, setCart] = useCart();
   const categories = useCategory();
 
   const navigate = useNavigate()
@@ -99,6 +99,8 @@ useEffect(() => {
       token: '',
     });
     await firebase.auth().signOut();
+    setCart([]);
+    localStorage.removeItem('cart');
     localStorage.removeItem('auth');
     toast.success('Logout Successfully');
   };
