@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon } from 'react-share';
+import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
 
 export const ShareComponent = ({ code }) => {
   const [isCopied, setIsCopied] = useState(false);
@@ -26,6 +26,9 @@ export const ShareComponent = ({ code }) => {
       <TwitterShareButton url={shareUrl} title={`Use my referral code: ${code}`}>
         Share on Twitter <TwitterIcon/>
       </TwitterShareButton>
+      <WhatsappShareButton title={`Use my referral code: ${code}`}>
+        Share on Whatsapp <WhatsappIcon/>
+      </WhatsappShareButton>
     </div>
   );
 };
