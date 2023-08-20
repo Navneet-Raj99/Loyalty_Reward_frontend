@@ -41,3 +41,9 @@ const isWalletInstalled = () => {
         return true;
     }
 };
+
+export const hexToDecimal = (hexValue) => {
+
+    const decimalValue = parseInt(hexValue, 16);
+    return decimalValue
+}
