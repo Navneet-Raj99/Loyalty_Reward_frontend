@@ -11,7 +11,7 @@ import '../styles/CartStyles.css';
 import Modal from 'react-modal';
 
 const CartPage = () => {
-  const [auth, setAuth, account] = useAuth();
+  const [auth, setAuth, account,setAccount, signature,setsignature, tokenInUse,settokenInUse] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState('');
   const [instance, setInstance] = useState('');
@@ -290,7 +290,7 @@ const CartPage = () => {
             ) : null}
           </div>
         </div>
-        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} />}
+        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} />}
       </div>
     </Layout>
   );
@@ -315,7 +315,7 @@ export function NFTCard({nftData, onClick, isSelected }) {
   );
 }
 
-export const TokenModal = ({isOpen, setisOpen}) => {
+export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse}) => {
   useEffect(() => {
 
   }, [])
@@ -323,12 +323,12 @@ export const TokenModal = ({isOpen, setisOpen}) => {
   const [selectedNFTs, setSelectedNFTs] = useState([]);
 
   const toggleNFTSelection = (index) => {
-    if (selectedNFTs.includes(index)) {
-      setSelectedNFTs(selectedNFTs.filter((item) => item !== index));
+    if (tokenInUse.includes(index)) {
+      settokenInUse(tokenInUse.filter((item) => item !== index));
     } else {
-      setSelectedNFTs([...selectedNFTs, index]);
+      settokenInUse([...tokenInUse, index]);
     }
-    console.log(selectedNFTs)
+    console.log(tokenInUse)
   };
 
 Modal.setAppElement('#root');
@@ -407,7 +407,7 @@ Modal.setAppElement('#root');
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {nfts.map((nft, index) => (
 
-            <NFTCard nftData={nft}  isSelected={selectedNFTs.includes(index)} onClick={() => toggleNFTSelection(index)} />
+            <NFTCard nftData={nft}  isSelected={tokenInUse?.includes(index)} onClick={() => toggleNFTSelection(index)} />
           ))}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
