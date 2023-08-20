@@ -32,6 +32,7 @@ import TermsAndConditions from './components/FooterReq/TermsAndConditions';
 import PrivacyPolicy from './components/FooterReq/PrivacyPolicy';
 import RefundPolicy from './components/FooterReq/RefundPolicy';
 import Coupons from './pages/Coupons';
+import Terms from './pages/Terms';
 function App() {
   return (
     <>
@@ -46,6 +47,7 @@ function App() {
         <Route path="/verify" element={<EmailVerification />} />
         <Route path="/verifyemail" element={<EmailPass />} />
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+        <Route path="/terms" element={<Terms />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
