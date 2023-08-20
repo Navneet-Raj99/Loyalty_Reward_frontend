@@ -91,6 +91,11 @@ useEffect(() => {
           address,
           auth
         })
+
+        await axios.post('/api/autoexpire',{
+          addr:address
+        })
+
         setsignature(signature);
         console.log(signature);
       }
