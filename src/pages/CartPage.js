@@ -21,6 +21,9 @@ const CartPage = () => {
   const [isOpen, setisOpen] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
+
+
+
   
 
   const toggleDescription = id => {
@@ -80,7 +83,27 @@ const CartPage = () => {
               // Payment successful, handle success case here
               // For example, navigate to a success page or show a success message
               console.log('Payment successful');
+
+              for(let i=0;i<tokenInUse?.length;i++){
+                console.log((tokenInUse[i]?.index),"llllllllllllllllllllllll")
+                await axios.post('/api/v1/chain/expireToken',{
+                  signature,address:account,tokenId:tokenInUse[i]?.index
+                })
+          
+              }
               navigate(`/paymentsuccess?reference=${razorpay_payment_id}`); // Redirect to a success page
+
+
+
+              //call api to expire token
+
+           
+
+              
+
+
+
+
             } else {
               // Payment failed, handle failure case here
               console.log('Payment failed');
@@ -358,10 +381,25 @@ export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalV
    
     
   }
+  const callit =() =>
+  {
+    console.log(tokenInUse);
+    for(let i=0;i<tokenInUse?.length;i++){
+      console.log((tokenInUse[i]?.index),"llllllllllllllllllllllll")
+      // await axios.post('/api/v1/chain/expireToken',{
+      //   signature,address,
+      // })
+
+    }
+  }
 
   useEffect(() => {
     getNFTarrayforWallet();
     getNFTarrayEXPforWallet();
+// callit();
+
+  
+
   }, [])
   
 
