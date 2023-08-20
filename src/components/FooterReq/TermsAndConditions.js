@@ -7,7 +7,7 @@ const TermsAndConditions = () => {
         <strong>Terms and Conditions</strong>
       </h2>
 
-      <p>Welcome to RideEasy!</p>
+      <p>Welcome to Style Fusion!</p>
 
       <p>
         These terms and conditions outline the rules and regulations for the use
