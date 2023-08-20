@@ -107,7 +107,7 @@ const CartPage = () => {
 if(total-totalValue>=0)
 {
   total=total-totalValue;
-}
+      }
       return total.toLocaleString('en-US', {
         style: 'currency',
         currency: 'INR',
@@ -286,21 +286,32 @@ if(total-totalValue>=0)
                   </button>
                 </div>
                 {account != "" && <div className="mt-2">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => setisOpen(true)}
-                  >
-                    Use Reward Points
-                  </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => setisOpen(true)}
+                    >
+                      Use Reward Points
+                    </button>
 
                   <br/>
-                  {tokenInUse.length} Reward Points Selected
-                </div>}
+                    {tokenInUse.length} Reward Points Selected
+                  </div>
+                )}
               </div>
             ) : null}
           </div>
         </div>
-        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} tokenInUse={tokenInUse} settokenInUse={settokenInUse} totalValue={totalValue} setTotalValue={setTotalValue} originalCost={totalPrice(0)} />}
+        {isOpen && (
+          <TokenModal
+            isOpen={isOpen}
+            setisOpen={setisOpen}
+            tokenInUse={tokenInUse}
+            settokenInUse={settokenInUse}
+            totalValue={totalValue}
+            setTotalValue={setTotalValue}
+            originalCost={totalPrice(0)}
+          />
+        )}
       </div>
     </Layout>
   );
@@ -309,44 +320,74 @@ if(total-totalValue>=0)
 export function NFTCard({ nftData, onClick, isSelected }) {
   const cardStyle = {
     border: isSelected ? '2px solid blue' : '1px solid #ccc',
-    padding: '10px',
+    borderRadius: '10px', // Rounded corners
+    padding: '20px',
     margin: '10px',
-    width: '150px',
+    width: '180px',
+    height: '250px', // Fixed height
     textAlign: 'center',
     cursor: 'pointer',
+    backgroundColor: 'white', // Background color
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Shadow effect
+    transition: 'transform 0.3s ease-in-out', // Smooth transform transition
+    ':hover': {
+      transform: 'scale(1.05)', // Scale effect on hover
+    },
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    color: '#333', // Dark grey text color
+    fontFamily: '"Arial", sans-serif', // Set the font family
+    lineHeight: '1.5', // Line spacing
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  };
+  const titleStyle = {
+    fontSize: '18px', // Font size for title
+    fontWeight: 'bold', // Bold text for title
   };
 
+  const descriptionStyle = {
+    fontSize: '14px',
+  };
   return (
     <div className="nft-card" style={cardStyle} onClick={onClick}>
       <img src={nftData?.imageUrl} alt="NFT" />
-      <p>Type: {nftData?.nftType}</p>
-      <p>Value: {nftData?.value}</p>
+      <p style={titleStyle}>Type: {nftData?.nftType}</p>
+      <p style={descriptionStyle}>Value: {nftData?.value}</p>
     </div>
   );
 }
 
-export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalValue ,setTotalValue, originalCost }) => {
-
+export const TokenModal = ({
+  isOpen,
+  setisOpen,
+  settokenInUse,
+  tokenInUse,
+  totalValue,
+  setTotalValue,
+  originalCost,
+}) => {
   // const [totalValue1, setTotalValue1] = useState(0);
 
   const [selectedNFTs, setSelectedNFTs] = useState([]);
-console.log(tokenInUse);
+  console.log(tokenInUse);
   const toggleNFTSelection = (index, nft) => {
-    const isSelected = tokenInUse.some((nft) => nft.index === index);
+    const isSelected = tokenInUse.some(nft => nft.index === index);
 
     if (isSelected) {
-      settokenInUse(tokenInUse.filter((nft) => nft.index !== index));
-  } else {
-    const newTotalValue = totalValue + nft?.value;
-    setTotalValue(newTotalValue);
-    console.log(newTotalValue,originalCost,"mmmmmmm");
-    if (newTotalValue > 1000) {
-      toast.error('Value threshold exceeded. Cannot select more NFTs.');
-  } else {
-    settokenInUse([...tokenInUse, { index, value:nft?.value }]);
-  }
-    
-  }
+      settokenInUse(tokenInUse.filter(nft => nft.index !== index));
+    } else {
+      const newTotalValue = totalValue + nft?.value;
+      setTotalValue(newTotalValue);
+      console.log(newTotalValue, originalCost, 'mmmmmmm');
+      if (newTotalValue > 1000) {
+        toast.error('Value threshold exceeded. Cannot select more NFTs.');
+      } else {
+        settokenInUse([...tokenInUse, { index, value: nft?.value }]);
+      }
+    }
     // if (tokenInUse.includes(index)) {
     //   settokenInUse(tokenInUse.filter((item) => item !== index));
     // } else {
@@ -355,7 +396,7 @@ console.log(tokenInUse);
     // console.log(tokenInUse)
   };
 
-Modal.setAppElement('#root');
+  Modal.setAppElement('#root');
 
   const nfts = [
     {
@@ -433,12 +474,14 @@ Modal.setAppElement('#root');
     // Add more NFT objects
   ];
 
-  
   useEffect(() => {
-    const newTotalValue = tokenInUse.reduce((sum, nft) => sum + nfts[nft.index].value, 0);
+    const newTotalValue = tokenInUse.reduce(
+      (sum, nft) => sum + nfts[nft.index].value,
+      0,
+    );
     setTotalValue(newTotalValue);
-}, [tokenInUse, nfts]);
-
+  }, [tokenInUse, nfts]);
+  const [isHovered, setHovered] = useState(false);
   return (
     <Modal
       isOpen={isOpen}
@@ -464,7 +507,32 @@ Modal.setAppElement('#root');
       // onRequestClose={closeModal}
       // contentLabel="NFT Modal"
     >
-      <div>
+      <div style={{ position: 'relative' }}>
+        <button
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: isHovered ? 'black' : 'transparent',
+            border: 'none',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            fontSize: '32px',
+            cursor: 'pointer',
+            color: isHovered ? 'white' : 'black',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onClick={() => {
+            setisOpen(false);
+          }}
+        >
+          ×
+        </button>
         <h2>NFTs</h2>
         <div
           style={{
@@ -475,17 +543,28 @@ Modal.setAppElement('#root');
           }}
         >
           {nfts.map((nft, index) => (
-
-            <NFTCard nftData={nft}  isSelected={tokenInUse.some((nft) => nft.index === index)} onClick={() => toggleNFTSelection(index, nft)} />
+            <NFTCard
+              nftData={nft}
+              isSelected={tokenInUse.some(nft => nft.index === index)}
+              onClick={() => toggleNFTSelection(index, nft)}
+            />
           ))}
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-          <button className="close-button" onClick={()=>
-          {
-
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          <button
+            className="close-button"
+            onClick={() => {
               setisOpen(false);
-          
-          }}>Close</button>
+            }}
+          >
+            Close
+          </button>
         </div>
       </div>
     </Modal>
