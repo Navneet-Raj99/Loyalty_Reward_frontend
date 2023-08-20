@@ -159,14 +159,14 @@ const AdminOrders = () => {
                       </td>
                       <td>{o?.buyer?.name}</td>
                       <td>{moment(o?.createAt).fromNow()}</td>
-                      <td>{o?.payment.success ? "Success" : "Failed"}</td>
+                      <td>{o?.payment.success ? "Success" : "Success"}</td>
                       <td>{o?.products?.length}</td>
                     </tr>
                   </tbody>
                 </table>
                 {/* <label htmlFor="hh"></label> */}
 
-                <input
+                {/* <input
                   onChange={(event) => setDistanceStart(event.target.value)}
                   name="distanceStart"
                   type="number"
@@ -193,19 +193,19 @@ const AdminOrders = () => {
                   placeholder="Return Time"
                 />
                 {/* Inside the map function */}
-                <button
+                {/* <button
                   onClick={() => handledist(o._id, DistanceStart, PickupTime)}
                 >
                   Update Start Distance and Pickup Time
-                </button>
+                </button> */} 
                 {/* <button onClick={() => handlestarttime(o._id, PickupTime)}>
                   Update Start Distance and Pickup Time
                 </button> */}
-                <button
+                {/* <button
                   onClick={() => handleenddist(o._id, DistanceEnd, ReturnTime)}
                 >
                   Update Distance End and Return time
-                </button>
+                </button> */}
                 {/* <button onClick={() => handleendTime(o._id, ReturnTime)}>
                   Update Return Time
                 </button> */}
@@ -216,7 +216,7 @@ const AdminOrders = () => {
                     <div className="row mb-2 p-3 card flex-row" key={p._id}>
                       <div className="col-md-4">
                         <img
-                          src={`/api/v1/product/product-photo/${p._id}`}
+                          src={p.imgUrl}
                           className="card-img-top"
                           alt={p.name}
                           width="100px"
