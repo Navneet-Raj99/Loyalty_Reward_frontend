@@ -11,7 +11,7 @@ import '../styles/CartStyles.css';
 import Modal from 'react-modal';
 
 const CartPage = () => {
-  const [auth, setAuth, account,setAccount, signature,setsignature, tokenInUse,settokenInUse] = useAuth();
+  const [auth, setAuth, account,setAccount, signature,setsignature, tokenInUse,settokenInUse,totalValue, setTotalValue] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState('');
   const [instance, setInstance] = useState('');
@@ -20,7 +20,6 @@ const CartPage = () => {
   const [isOpen, setisOpen] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
-  const [totalValue, setTotalValue] = useState(0);
   
 
   const toggleDescription = id => {
