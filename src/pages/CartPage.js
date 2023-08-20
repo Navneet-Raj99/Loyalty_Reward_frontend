@@ -359,6 +359,12 @@ export const TokenModal = ({isOpen, setisOpen,  settokenInUse, tokenInUse,totalV
     
   }
 
+  useEffect(() => {
+    getNFTarrayforWallet();
+    getNFTarrayEXPforWallet();
+  }, [])
+  
+
 
   
 
