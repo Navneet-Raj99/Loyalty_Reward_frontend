@@ -61,7 +61,6 @@ const CartPage = () => {
 
           // Now you need to send these details back to your server for verification
           // using another API endpoint on your server
-
           try {
             const response = await axios.post(
               '/api/v1/payment/paymentverification',
@@ -69,7 +68,8 @@ const CartPage = () => {
                 razorpay_order_id,
                 razorpay_payment_id,
                 razorpay_signature,
-                cart
+                cart,
+                account
               },
             );
 
