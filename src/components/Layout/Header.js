@@ -39,7 +39,7 @@ async function getNFTDataByWallet(wallet) {
   // const contractWithSigner = contract.connect(signer);
   //  await contractWithSigner.expireNFT(0,wallet);
 
-  const nftData = await contract.getNFTsByWalletExp(wallet);
+  const nftData = await contract.getNFTsByWallet(wallet);
   console.log({nftData});
   // console.log({nftData});
 }
