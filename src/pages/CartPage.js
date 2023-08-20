@@ -9,9 +9,21 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import '../styles/CartStyles.css';
 import Modal from 'react-modal';
+import { hexToDecimal } from '../helper';
 
 const CartPage = () => {
-  const [auth, setAuth, account,setAccount, signature,setsignature, tokenInUse,settokenInUse,totalValue, setTotalValue] = useAuth();
+  const [
+    auth,
+    setAuth,
+    account,
+    setAccount,
+    signature,
+    setsignature,
+    tokenInUse,
+    settokenInUse,
+    totalValue,
+    setTotalValue,
+  ] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState('');
   const [instance, setInstance] = useState('');
@@ -19,8 +31,6 @@ const CartPage = () => {
   const navigate = useNavigate();
   const [isOpen, setisOpen] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
-
-  
 
   const toggleDescription = id => {
     setExpandedDescriptions({
@@ -79,7 +89,18 @@ const CartPage = () => {
               // Payment successful, handle success case here
               // For example, navigate to a success page or show a success message
               console.log('Payment successful');
+
+              for (let i = 0; i < tokenInUse?.length; i++) {
+                console.log(tokenInUse[i]?.index, 'llllllllllllllllllllllll');
+                await axios.post('/api/v1/chain/expireToken', {
+                  signature,
+                  address: account,
+                  tokenId: tokenInUse[i]?.index,
+                });
+              }
               navigate(`/paymentsuccess?reference=${razorpay_payment_id}`); // Redirect to a success page
+
+              //call api to expire token
             } else {
               // Payment failed, handle failure case here
               console.log('Payment failed');
@@ -98,15 +119,14 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice = (totalvalue) => {
+  const totalPrice = totalvalue => {
     try {
       let total = 0;
       cart?.map(item => {
         total = total + item.price;
       });
-if(total-totalValue>=0)
-{
-  total=total-totalValue;
+      if (total - totalValue >= 0) {
+        total = total - totalValue;
       }
       return total.toLocaleString('en-US', {
         style: 'currency',
@@ -285,15 +305,15 @@ if(total-totalValue>=0)
                     Make Payment
                   </button>
                 </div>
-                {account != "" && <div className="mt-2">
+                {account != '' && (
+                  <div className="mt-2">
                     <button
                       className="btn btn-danger"
                       onClick={() => setisOpen(true)}
                     >
                       Use Reward Points
                     </button>
-
-                  <br/>
+                    <br />
                     {tokenInUse.length} Reward Points Selected
                   </div>
                 )}
@@ -310,6 +330,8 @@ if(total-totalValue>=0)
             totalValue={totalValue}
             setTotalValue={setTotalValue}
             originalCost={totalPrice(0)}
+            signature={signature}
+            address={account}
           />
         )}
       </div>
@@ -317,8 +339,11 @@ if(total-totalValue>=0)
   );
 };
 
-export function NFTCard({ nftData, onClick, isSelected }) {
+export function NFTCard({ nftData, onClick, isSelected, id, expiredNFT }) {
+  console.log(expiredNFT[id]?.[1], 'jkjkjkj');
+
   const cardStyle = {
+    backgroundColor: expiredNFT[id]?.[1] ? 'lightgrey' : 'white',
     border: isSelected ? '2px solid blue' : '1px solid #ccc',
     borderRadius: '10px', // Rounded corners
     padding: '20px',
@@ -327,6 +352,7 @@ export function NFTCard({ nftData, onClick, isSelected }) {
     height: '250px', // Fixed height
     textAlign: 'center',
     cursor: 'pointer',
+    pointerEvents: expiredNFT[id]?.[1] && 'none',
     backgroundColor: 'white', // Background color
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Shadow effect
     transition: 'transform 0.3s ease-in-out', // Smooth transform transition
@@ -353,9 +379,10 @@ export function NFTCard({ nftData, onClick, isSelected }) {
   };
   return (
     <div className="nft-card" style={cardStyle} onClick={onClick}>
-      <img src={nftData?.imageUrl} alt="NFT" />
-      <p style={titleStyle}>Type: {nftData?.nftType}</p>
-      <p style={descriptionStyle}>Value: {nftData?.value}</p>
+      <img src={nftData[0]} alt="NFT" />
+      <p>Type: {hexToDecimal(nftData[1]?.hex)}</p>
+      <p>Value: {hexToDecimal(nftData[2]?.hex)}</p>
+      <p> {expiredNFT[id]?.[1] ? 'Expired' : 'Available'}</p>
     </div>
   );
 }
@@ -368,24 +395,66 @@ export const TokenModal = ({
   totalValue,
   setTotalValue,
   originalCost,
+  signature,
+  address,
 }) => {
   // const [totalValue1, setTotalValue1] = useState(0);
+  const [originalNFT, setoriginalNFT] = useState([]);
+  const [expiredNFT, setexpiredNFT] = useState([]);
+
+  const getNFTarrayforWallet = async () => {
+    const { data } = await axios.post('/api/v1/chain/getnftbywallet', {
+      signature,
+      address,
+    });
+    // console.log(data?.array);
+    setoriginalNFT(data?.array);
+  };
+
+  const getNFTarrayEXPforWallet = async () => {
+    const { data } = await axios.post('/api/v1/chain/getnftbywalletEXP', {
+      signature,
+      address,
+    });
+    // console.log(data?.array);
+
+    setexpiredNFT(data?.array);
+  };
+  const callit = () => {
+    console.log(tokenInUse);
+    for (let i = 0; i < tokenInUse?.length; i++) {
+      console.log(tokenInUse[i]?.index, 'llllllllllllllllllllllll');
+      // await axios.post('/api/v1/chain/expireToken',{
+      //   signature,address,
+      // })
+    }
+  };
+
+  useEffect(() => {
+    getNFTarrayforWallet();
+    getNFTarrayEXPforWallet();
+    // callit();
+  }, []);
 
   const [selectedNFTs, setSelectedNFTs] = useState([]);
-  console.log(tokenInUse);
+  // console.log(tokenInUse);
   const toggleNFTSelection = (index, nft) => {
-    const isSelected = tokenInUse.some(nft => nft.index === index);
-
+    // console.log(index, tokenInUse,"yyyymmmmmmmmyyy")
+    const isSelected = tokenInUse.some((nft, id) => nft.index === index);
+    // console.log(isSelected);
     if (isSelected) {
       settokenInUse(tokenInUse.filter(nft => nft.index !== index));
     } else {
-      const newTotalValue = totalValue + nft?.value;
+      const newTotalValue = totalValue + hexToDecimal(nft[2]?.hex);
       setTotalValue(newTotalValue);
-      console.log(newTotalValue, originalCost, 'mmmmmmm');
-      if (newTotalValue > 1000) {
+      // console.log(newTotalValue,originalCost,"mmmmmmm");
+      if (newTotalValue > 2000) {
         toast.error('Value threshold exceeded. Cannot select more NFTs.');
       } else {
-        settokenInUse([...tokenInUse, { index, value: nft?.value }]);
+        settokenInUse([
+          ...tokenInUse,
+          { index, value: hexToDecimal(nft[2]?.hex) },
+        ]);
       }
     }
     // if (tokenInUse.includes(index)) {
@@ -475,12 +544,14 @@ export const TokenModal = ({
   ];
 
   useEffect(() => {
+    // console.log(originalNFT[1]?.[2],"mmmmm")
     const newTotalValue = tokenInUse.reduce(
-      (sum, nft) => sum + nfts[nft.index].value,
+      (sum, nft) => sum + hexToDecimal(originalNFT[nft.index]?.[2]?.hex),
       0,
     );
+    // console.log(newTotalValue,"nnnnnkkk")
     setTotalValue(newTotalValue);
-  }, [tokenInUse, nfts]);
+  }, [tokenInUse, originalNFT]);
   const [isHovered, setHovered] = useState(false);
   return (
     <Modal
@@ -542,11 +613,14 @@ export const TokenModal = ({
             marginBottom: '20px',
           }}
         >
-          {nfts.map((nft, index) => (
+          {originalNFT.map((nft, index) => (
             <NFTCard
               nftData={nft}
+              key={index}
+              id={index}
               isSelected={tokenInUse.some(nft => nft.index === index)}
               onClick={() => toggleNFTSelection(index, nft)}
+              expiredNFT={expiredNFT}
             />
           ))}
         </div>
