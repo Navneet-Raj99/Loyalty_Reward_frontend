@@ -8,14 +8,16 @@ import { AiFillWarning } from 'react-icons/ai';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import '../styles/CartStyles.css';
+import Modal from 'react-modal';
 
 const CartPage = () => {
-  const [auth, setAuth] = useAuth();
+  const [auth, setAuth, account] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState('');
   const [instance, setInstance] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [isOpen,setisOpen]= useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   const toggleDescription = id => {
@@ -68,6 +70,7 @@ const CartPage = () => {
                 razorpay_payment_id,
                 razorpay_signature,
                 cart,
+                account
               },
             );
 
@@ -164,9 +167,8 @@ const CartPage = () => {
                 : `Hello  ${auth?.token && auth?.user?.name}`}
               <p className="text-center">
                 {cart?.length
-                  ? `You Have ${cart.length} items in your cart ${
-                      auth?.token ? '' : 'please login to checkout !'
-                    }`
+                  ? `You Have ${cart.length} items in your cart ${auth?.token ? '' : 'please login to checkout !'
+                  }`
                   : ' Your Cart Is Empty'}
               </p>
             </h1>
@@ -277,13 +279,60 @@ const CartPage = () => {
                     Make Payment
                   </button>
                 </div>
+                <div className="mt-2">
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => setisOpen(true)}
+                  >
+                    Use Reward Points
+                  </button>
+                </div>
               </div>
             ) : null}
           </div>
         </div>
+        {isOpen && <TokenModal isOpen={isOpen} setisOpen={setisOpen} />}
       </div>
     </Layout>
   );
 };
+
+export const TokenModal =(isOpen,setisOpen) =>
+{
+  const nfts = [
+    {
+        imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.38.jpeg',
+        nftType: 'Type A',
+        value: 100
+    },
+    {
+        imageUrl: 'https://flipkarbucket.s3.ap-south-1.amazonaws.com/Tokens/WhatsApp+Image+2023-08-20+at+01.53.27.jpeg',
+        nftType: 'Type B',
+        value: 200
+    },
+    // Add more NFT objects
+];
+  return (
+    <Modal
+        isOpen={isOpen}
+        // onRequestClose={onRequestClose}
+        // contentLabel="NFT Modal"
+    >
+        <div>
+            <h2>NFTs</h2>
+            <ul>
+                {nfts.map((nft, index) => (
+                    <li key={index}>
+                        <img src={nft.imageUrl} alt={`NFT ${index}`} />
+                        <p>Type: {nft.nftType}</p>
+                        <p>Value: {nft.value}</p>
+                    </li>
+                ))}
+            </ul>
+            <button onClick={()=>setisOpen(false)}>Close</button>
+        </div>
+    </Modal>
+);
+}
 
 export default CartPage;

@@ -34,8 +34,14 @@ const Header = () => {
 
   // Call a function
 async function getNFTDataByWallet(wallet) {
-  const nftData = await contract.getNFTsByWallet(wallet);
+  console.log("entered");
+  // const signer = provider.getSigner();
+  // const contractWithSigner = contract.connect(signer);
+  //  await contractWithSigner.expireNFT(0,wallet);
+
+  const nftData = await contract.getNFTsByWalletExp(wallet);
   console.log({nftData});
+  // console.log({nftData});
 }
 
 // Send a transaction
