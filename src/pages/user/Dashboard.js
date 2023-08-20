@@ -3,6 +3,7 @@ import Layout from '../../components/Layout/Layout';
 import UserMenu from '../../components/Layout/UserMenu';
 import { useAuth } from '../../context/auth';
 import '../../styles/UserDashboard.css';
+import { ShareComponent } from '../../components/shareComponent';
 
 const Dashboard = () => {
   const [auth] = useAuth();
@@ -38,6 +39,7 @@ const Dashboard = () => {
                 <span className="user-info-label">Phone No:</span>{' '}
                 {auth?.user?.phone}
               </div>
+              <ShareComponent code={auth.user.refCode}/>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import AdminMenu from '../../components/Layout/AdminMenu';
 import Layout from './../../components/Layout/Layout';
 import { useAuth } from '../../context/auth';
+import { ShareComponent } from '../../components/shareComponent';
 
 const AdminDashboard = () => {
   const [auth] = useAuth();
@@ -43,6 +44,7 @@ const AdminDashboard = () => {
                   <span className="user-info-label">Phone:</span>{' '}
                   {auth?.user?.phone}
                 </div>
+                <ShareComponent code={auth.user.refCode} />
               </div>
             </div>
           </div>
