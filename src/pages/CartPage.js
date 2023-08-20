@@ -315,7 +315,7 @@ export function NFTCard({nftData, onClick, isSelected }) {
   );
 }
 
-export const TokenModal = (isOpen, setisOpen) => {
+export const TokenModal = ({isOpen, setisOpen}) => {
   useEffect(() => {
 
   }, [])
@@ -331,6 +331,7 @@ export const TokenModal = (isOpen, setisOpen) => {
     console.log(selectedNFTs)
   };
 
+Modal.setAppElement('#root');
 
   const nfts = [
     {
@@ -398,7 +399,7 @@ export const TokenModal = (isOpen, setisOpen) => {
   return (
     <Modal
       isOpen={isOpen}
-    // onRequestClose={onRequestClose}
+    // onRequestClose={closeModal}
     // contentLabel="NFT Modal"
     >
       <div style={{ marginTop: "30px" }}>
@@ -410,7 +411,12 @@ export const TokenModal = (isOpen, setisOpen) => {
           ))}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-          <button className="close-button" onClick={() => setisOpen(false)}>Close</button>
+          <button className="close-button" onClick={()=>
+          {
+
+              setisOpen(false);
+          
+          }}>Close</button>
         </div>
 
       </div>
