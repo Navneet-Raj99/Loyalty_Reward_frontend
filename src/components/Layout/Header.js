@@ -28,7 +28,7 @@ const Header = () => {
 
   //For testing
 
-  
+
   const provider = new ethers.providers.JsonRpcProvider('HTTP://127.0.0.1:7545');
   const contractABI = ABI.CUSTOMNFT;
 
@@ -38,10 +38,10 @@ const Header = () => {
 
   // Call a function
 async function getNFTDataByWallet(wallet) {
-  console.log("entered");
+  // console.log("entered");
   // const signer = provider.getSigner();
   // const contractWithSigner = contract.connect(signer);
-  //  await contractWithSigner.expireNFT(0,wallet);
+  //  await contractWithSigner.expireNFT(4,wallet);
 
   const nftData = await contract.getNFTsByWallet(wallet);
   console.log({nftData});
