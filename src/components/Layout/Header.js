@@ -102,6 +102,7 @@ useEffect(() => {
     setCart([]);
     localStorage.removeItem('cart');
     localStorage.removeItem('auth');
+    onLogout();
     toast.success('Logout Successfully');
   };
   return (
