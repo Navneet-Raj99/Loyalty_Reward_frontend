@@ -23,6 +23,7 @@ const Register = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [answer, setAnswer] = useState('');
+  const [userRef, setUserRef] = useState('');
   const [Okk, setOkk] = useState(false);
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
@@ -76,6 +77,7 @@ const Register = () => {
           answer,
           isSeller,
           imgUrl,
+          userRef
         });
         console.log(res);
         if (res && res.data.success) {
@@ -239,6 +241,16 @@ const Register = () => {
               id="exampleInputEmail1"
               placeholder="What is Your Favorite sports"
               required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              value={userRef}
+              onChange={e => setUserRef(e.target.value)}
+              className='form-control'
+              id="exampleInputEmail1"
+              placeholder='Enter User Referral Code'
             />
           </div>
           {/* <label>
