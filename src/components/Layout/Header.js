@@ -10,6 +10,7 @@ import { firebase } from '../../pages/Auth/Firebase';
 import { connectWallet, signMessage } from '../../helper';
 import { ethers } from 'ethers';
 import { ABI } from '../../abi/abi';
+import axios from "axios";
 
 // const { ethers } = require('ethers');
 
@@ -82,7 +83,11 @@ useEffect(() => {
         console.log({"Wallet Connected":response?.account})
         setAccount(response.account);
         const { signature, address } = await signMessage("Please sign your public address for authorized API calls");
-
+        await axios.post('/api/v1/chain/set-address', {
+          signature,
+          address,
+          auth
+        })
         setsignature(signature);
         console.log(signature);
       }
